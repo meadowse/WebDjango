@@ -3,6 +3,8 @@ from docx import Document
 from docxcompose.composer import Composer
 from docx import Document as Document_compose
 import shutil
+
+
 def createLabels(data):
     print(data)
     # Откройте файл с шаблоном

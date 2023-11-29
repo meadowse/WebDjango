@@ -1,5 +1,5 @@
 {% extends 'dbServer/pattern.html' %}
-{% block name %} {{ title }}{% endblock %}
+
 {% block body %}
 
 
@@ -35,63 +35,69 @@
                 </div>
                 <div class="lists-table__col lists-table__col-name">
                     <div class="lists-table__box lists-table__box-name">
-                        <div class="filter-col">
-                            <ul class="filter-col__list">
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" disabled checked>
-                                        <span class="text">Номер дела</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col2">
-                                        <span class="text">Номер письма</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col3">
-                                        <span class="text">Истец</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col4">
-                                        <span class="text">Ответчик</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col5">
-                                        <span class="text">Судья</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col6">
-                                        <span class="text">Статус дела</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col7">
-                                        <span class="text">Ответственный</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col8">
-                                        <span class="text">Статус</span>
-                                    </label>
-                                </li>
-                                <li class="filter-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col9">
-                                        <span class="text">Ссылка на дело</span>
-                                    </label>
-                                </li>
-                            </ul>
+                        <div class="toggle-col">
+                           <ul class="toggle-col__list">
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" disabled checked>
+                                    <span class="text">Адрес объекта</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col1">
+                                    <span class="text">Округ</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col2">
+                                    <span class="text">Назначение объекта</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col3">
+                                    <span class="text">Кадастровый номер</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col4">
+                                    <span class="text">Площадб объекта, м2</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col5">
+                                    <span class="text">Этажность</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col6">
+                                    <span class="text">Вид объекта</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col7">
+                                    <span class="text">Вид собственности</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col8">
+                                    <span class="text">Собственник/арендатор</span>
+                                </label>
+                            </li>
+                            <li class="toggle-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col9">
+                                    <span class="text">Выписка</span>
+                                </label>
+                            </li>
+                        </ul>
                         </div>
                         <p class="text head-text">Номер дела</p>
                     </div>
@@ -183,7 +189,7 @@
                     </div>
                     {% endfor %}
                 </div>
-
+            </div>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}

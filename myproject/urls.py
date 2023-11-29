@@ -21,7 +21,6 @@ from CalsPage.views import *
 from EmailPage.views import *
 from EmailCount.views import *
 
-
 # смотрим переходы по разным url 
 urlpatterns = [
     path('admin/', admin.site.urls),  # отслеживаем переход на страницу администратора
@@ -30,7 +29,7 @@ urlpatterns = [
     path('cals/', include('CalsPage.urls')),
     path('email/', include('EmailPage.urls')),
     path('emailCount/', include('EmailCount.urls')),
-    # path('sms/', include('SMSPage.urls')),
+    # path('sms/', include('SMSPage.urls'))
 ]
 
 handler404 = pageNotFound

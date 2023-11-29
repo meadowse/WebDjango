@@ -1,37 +1,30 @@
-from django.contrib.auth import logout
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
-# from django.views.generic import TemplateView
-from django.shortcuts import redirect
-from test import *
-from django.http import JsonResponse
-# from .models import *
-# from .forms import CompaniesForm
-# from django.contrib.auth.views import LoginView
-from django.contrib.auth.forms import AuthenticationForm
-# Create your views here.
-from django.contrib.auth.views import LoginView
-# from django.views.decorators.cache import cache_page
-from django.views.decorators.csrf import csrf_exempt  # , csrf_protect  # Add this
 import mimetypes
 import os
+from django.contrib.auth import logout
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from EmailCount.views import printDocx
+from test import *
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
+from django.views.decorators.csrf import csrf_exempt
+from databaseConnect import *
 
 
+# Create your views here.
 class MainView(LoginView):
     form_class = AuthenticationForm
     template_name = "dbServer/pasvor.html"
 
-    @csrf_exempt
     def get(self, request):
         return render(request, self.template_name, {})
 
-    @csrf_exempt
     def get_success_url(self):
         return reverse_lazy('home')
 
 
-@csrf_exempt
 def logout_user(request):
     logout(request)
     return redirect('login')
@@ -40,108 +33,19 @@ def logout_user(request):
 # все методы получают http запрос с параметрами страницы,
 # а так же они возвращают http ответ
 # вместо HttpResponse отправляем html страницу
+@csrf_exempt
 def index(request):
-    if request.method == 'GET':
-        obj = {
-            # 'search': 'акб',  # что мы ищем
-            # 'absence':  # исключить пустые строки столбцов, это массив перечисленных столбцов, в которых надо
-            #              # исключить пустые строки
-            # ['legal_address', 'position_head', 'fio_head', 'telephone', 'mail', 'website', 'type_activity'],
-            # 'email_newsletter': 1,  # участвовал в рассылке: 1 - Да, 0 - Нет
-            # 'mail_newsletter': 1,
-            # 'sms_mailing': 1,
-            # 'the_bell': 1,
-            # 'revenue': 0,  # значение от которого отталкиваемся в обороте
-            # 'comparison': -1,  # 0 - равно, 1 - больше, -1 - меньше
-            # 'data_source': 'СУД',  # источник данных
-            # 'order by': 'revenue',     # сортировочный столбец (здесь в принципе можно передавать номер столбца
-            #                            # начиная с 1 - 'company_name')
-            # 'desc': 1,  # сортировка по: 0 - возрастанию, 1 - убыванию
-            # 'limit': 10,  # кол-во строк, 0 - все данные
-        }
-    else:
-        obj = json.loads(request.body)
+    rez = "select * from private.all_data_companies"
     names = ["Название компании", "ИНН", "Юр. адрес", "Должность руководителя", "Фио руководителя", "телефон", "сайт",
              "источник данных", "код активности", "доход", "рассылка по электронной почте", "рассылка по почте",
              "рассылка по смс", "звонки"]
-    where = 'where inn_company::bigint > 0'
-    search = obj.get('search')
-    if search is not None:
-        where += ((" and concat(company_name, '|', inn_company, '|', legal_address, '|', position_head, '|', "
-                   "fio_head, '|', telephone, '|', mail, '|', website, '|', type_activity, '|', revenue, '|', "
-                   "email_newsletter, '|', mail_newsletter, '|', sms_mailing, '|', the_bell) "
-                   "ilike '%") + str(search) + "%'")
-
-    email_newsletter = obj.get('email_newsletter')
-    if email_newsletter is not None:
-        if email_newsletter == 1:
-            where += ' and email_newsletter is not null'
-        elif email_newsletter == 0:
-            where += ' and email_newsletter is null'
-
-    mail_newsletter = obj.get('mail_newsletter')
-    if mail_newsletter is not None:
-        if mail_newsletter == 1:
-            where += ' and mail_newsletter is not null'
-        elif mail_newsletter == 0:
-            where += ' and mail_newsletter is null'
-
-    sms_mailing = obj.get('sms_mailing')
-    if sms_mailing is not None:
-        if sms_mailing == 1:
-            where += ' and sms_mailing is not null'
-        elif sms_mailing == 0:
-            where += ' and sms_mailing is null'
-
-    the_bell = obj.get('the_bell')
-    if the_bell is not None:
-        if the_bell == 1:
-            where += ' and the_bell is not null'
-        elif the_bell == 0:
-            where += ' and the_bell is null'
-
-    revenue = obj.get('revenue')
-    if revenue is not None:
-        comparison = obj.get('comparison')
-        if comparison is None or comparison == 1:
-            where += ' and revenue > ' + str(revenue)
-        elif comparison == 0:
-            where += ' and revenue = ' + str(revenue)
-        elif comparison == -1:
-            where += ' and revenue < ' + str(revenue)
-
-    absence = obj.get('absence')
-    if absence is not None:
-        if len(absence) != 0:
-            for elem in absence:
-                if elem == 'telephone' or elem == 'mail':
-                    where += ' and ' + elem + ' is not null' + ' and ' + elem + " != '{}'"
-                else:
-                    where += ' and ' + elem + " != ''"
-
-    dataSource = obj.get('data_source')
-    if dataSource is not None:
-        where += " and '" + str(dataSource) + "' = any (data_source)"
-
-    orderBy = obj.get('order by')
-    if orderBy is None:
-        orderBy = 'company_name'
-    desc = obj.get('desc')
-    if desc is not None:
-        if obj.get('desc') == 1:
-            orderBy += ' desc'
-
-    limit = obj.get('limit')
-    if limit is not None:
-        if limit == 0:
-            limit = 'all'
-    else:
-        limit = 500
-    rez = ("select * from private.all_data_companies %s order by %s limit %s" % (where, orderBy, limit))
-    Info = query_db(rez)
-    rezult = json.dumps(Info, ensure_ascii=False)
-    return render(request, 'dbServer/companies.html', {'title': "main", 'Companies': Info, 'names': names}) \
-        if request.method == 'GET' else JsonResponse(rezult, safe=False)
+    Str = search(request, rez)
+    Json = json.loads(Str)
+    Info = Json.get('Info')
+    count = Json.get('count')
+    return render(request, 'dbServer/companies.html', {'title': "main", 'Companies': Info, 'count': count,
+                                                       'names': names})\
+        if request.method == 'GET' else JsonResponse(Json, safe=False)
 
 
 def info(request, catid):
@@ -203,15 +107,7 @@ def extract(request):
     cadastralNumber = cadastralNumber.replace(':', '-')
     print(cadastralNumber)
     excel_file_name = "/home/meadowse/media/" + cadastralNumber + "_" + obj.get('typeObject') + ".pdf"
-    with open(excel_file_name, "rb") as fp:
-        response = HttpResponse(fp.read())
-    file_type = mimetypes.guess_type(excel_file_name)
-    if file_type is None:
-        file_type = 'application/octet-stream'
-    response['Content-Type'] = file_type
-    response['Content-Length'] = str(os.stat(excel_file_name).st_size)
-    response['Content-Disposition'] = "attachment; filename=excel_file.xlsx"
-    return response
+    return printDocx(excel_file_name)
 
 
 def pageNotFound(request, exception):
@@ -220,21 +116,43 @@ def pageNotFound(request, exception):
 
 # sms
 def smsmainCourt(request):
-    Info = query_db("select * from private.universal_mailing u where u.type_mailing = 'СМС'")
-    # TODO  where tm.type_mailing = 3
+    info = query_db("select * from private.universal_mailing u where u.type_mailing = 'СМС'")
+    # print(info)
     names = ["Наименование рассылки", "Шаблон", "Кол-во писем", "Дата создания", "Дата отправки", "Ответственный",
              "Статус", "Привязанные контакты"]
-    return render(request, 'sms/sms.html', {'title': "main", 'Companies': Info, 'names': names})
+    Companies = query_db("select * from private.all_data_companies limit 10")
+    newsleter = (query_db("select * from private.templates"))
+    return render(request, 'EmailCount/mail.html', {'title': "main", 'mail': info, 'names': names,
+                                                    'Companies': Companies, 'templateForSend': newsleter, 'types_mailing':'3'})
+
 
 
 # суд
 def mainCourt(request):
-    Info = query_db("select * from private.letters_court")
+    info = query_db("select * from private.letters_court")
     names = ['Номер дела', 'Номер письма', 'Истец', 'Ответчик', 'Судья', 'Статус дела', 'Ответственный', 'Статус',
              'Ссылка на дело']
     # TODO для поля где стоит иин сделать запрос к другим базам данных и выводить информацию из запроса sql
-    return render(request, 'court/court.html', {'title': "Court", 'Companies': Info, 'names': names})
+    return render(request, 'court/court.html', {'title': "Court", 'Companies': info, 'names': names})
 
+
+def smsinfo(request, catid):
+    rez1 = ("select * from private.all_data_companies a where a.inn_company::bigint not in (select mc.id_company "
+            "from private.mailing_companies mc where mc.id_mailing = %s)" % catid)
+    rez2 = ("select * from private.all_data_companies a where a.inn_company::bigint in (select mc.id_company "
+            "from private.mailing_companies mc where mc.id_mailing = %s)" % catid)
+    info = search(request, rez1)
+    info2 = search(request, rez2)
+    return render(request, 'sms/updateMailing.html',
+                  {'NotInNewsletter': info, 'InNewsletter': info2,
+                                                      'template': catid,  'types_mailing':'3'})
 
 def courtinfo(request, catid):
+    pass
+
+def objectShow(request):
+    info = query_db("select * from private.all_cadastral_numbers")
+    return render(request, 'dbServer/objects.html', {'objInfo':info})
+
+def objectInfio(request, catid):
     pass

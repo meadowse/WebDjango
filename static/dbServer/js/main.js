@@ -679,39 +679,37 @@ function extract() {
     }
 }
 
-// function createLetters(){
-//     let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
-//     let values = [];
-//     if (checkboxes.length === 0 || checkboxes.length > 1) {
-//         alert("Необходимо выбрать только одну рассылку")
-//     } else {
-//         alert(tutu)
-//         for (let i = 0; i < checkboxes.length; i++) {
-//             values.push([checkboxes[i].value]);
-//             alert(checkboxes[i].value);
-//         }
-//
-//         var xhr = new XMLHttpRequest();
-//         xhr.open("POST", "/emailCount/createLetters/", true);
-//         xhr.setRequestHeader('Content-Type', 'application/json');
-//         xhr.send(JSON.stringify(values)); // Отправьте массив значений
-//         xhr.responseType = "blob";
-//         xhr.onreadystatechange = function () {
-//             xhr.onload = function () {
-//                 if (xhr.status === 200) {
-//                     var fileName = ".docx"; // Задайте имя файла для скачивания
-//                     var a = document.createElement("a");
-//                     a.href = window.URL.createObjectURL(xhr.response);
-//                     a.download = fileName;
-//                     a.style.display = "none";
-//                     document.body.appendChild(a);
-//                     a.click();
-//                     a.remove();
-//                 }
-//             };
-//         }
-//     }
-// }
+function createLetters(){
+    let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
+    let values = [];
+    if (checkboxes.length === 0 || checkboxes.length > 1) {
+        alert("Необходимо выбрать только одну рассылку")
+    } else {
+        for (let i = 0; i < checkboxes.length; i++) {
+            values.push([checkboxes[i].value]);
+            // alert(checkboxes[i].value);
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/emailCount/createLetters/", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(values)); // Отправьте массив значений
+        xhr.responseType = "blob";
+        xhr.onreadystatechange = function () {
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var fileName = "downloaded_file.docx"; // Задайте имя файла для скачивания
+                    var a = document.createElement("a");
+                    a.href = window.URL.createObjectURL(xhr.response);
+                    a.download = fileName;
+                    a.style.display = "none";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                }
+            };
+        }
+    }
+}
 
 function removeLine(){
        let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');

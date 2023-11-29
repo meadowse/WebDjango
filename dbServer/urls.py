@@ -15,20 +15,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from django.views.decorators.cache import cache_page
 from .views import * # смотрим по разным классам в
 # смотрим переходы по разным url
+
 
 urlpatterns = [
     path('', index, name='home'),
     # path('table/', table, name='table'),
     path('<int:catid>/', info, name='info'),
     path('sms/', smsmainCourt, name='smsmainCourt'),
+    path('sms/<str:catid>/', smsinfo, name='smsinfo'),
     path('court/', mainCourt, name='mainCourt'),
     path('court/<str:catid>/', courtinfo, name='courtinfo'),
     path('infoAboutObj/', infoAboutObj, name='infoAboutObj'),
-    path('login/', MainView.as_view(), name='login'),
+    path('login', MainView.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
-    # path('pageNotFound/', pageNotFound, name='pageNotFound'),
     path('extract/', extract, name='extract'),
+    path('objects/', objectShow, name='objects'),
+    path('objects/<int:catid>/', objectInfio, name='objectsInfo'),
 ]
+

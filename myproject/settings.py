@@ -13,26 +13,27 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import psycopg2
-from .key import secretKey
+# from .key import secretKey
 # import dj_database_url
-
+from sshtunnel import SSHTunnelForwarder
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = 'cbaa45b7774dc2433dcad6c037665c57f2db4fd113a1bf2850e041614093fa0340588b9ced4e7780'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # secret key - секретный ключ, используемый для подписи куки, токенов и других объектов,
 # используемых для безопасности приложения.
-try:
-    SECRET_KEY = os.environ["SECRET_KEY"]
-except KeyError as e:
-    raise RuntimeError("Could not find a SECRET_KEY in environment") from e
+# try:
+#     SECRET_KEY = os.environ["SECRET_KEY"]
+# except KeyError as e:
+#     raise RuntimeError("Could not find a SECRET_KEY in environment") from e
 
 # Debug - определяет, будет ли включен режим отладки.
 # Не следует использовать этот режим в продакшн-сервере.
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'rasilka.ru', 'rasilka.online', '82.148.30.81']
 
@@ -87,9 +88,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 
+# Connect to a server using the ssh keys. See the sshtunnel documentation for using password authentication
+ssh_tunnel = SSHTunnelForwarder(
+        ('10.13.13.2', 22),
+        ssh_pkey="~/.ssh/id_rsa",
+        ssh_username="meadowse",
+        remote_bind_address=('localhost', 5432),)
+ssh_tunnel.start()
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-# поменять бд с которыми работаем
+# поменять бд с которыми работаем 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -97,8 +105,8 @@ DATABASES = {
         'USER': 'meadowse',
         'PASSWORD': 'Comebackplz56!!',
         'HOST': 'localhost',
-        'PORT': '5432',
-    }
+        'PORT': ssh_tunnel.local_bind_port,
+    },
 }
 
 
@@ -119,6 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -153,7 +162,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = ['https://rasilka.ru', 'https://rasilka.online', ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '../../media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = 'media/'
 
 # Add to project/settings.py

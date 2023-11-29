@@ -1,296 +1,264 @@
-"use strict"
-document.addEventListener("DOMContentLoaded", () => {
-    const body = document.body;
 
-    /*табы*/
-    const tabs = document.querySelectorAll('.tabs-item');
+// "use strict"
+// document.addEventListener("DOMContentLoaded", () => {
+//     const body = document.body;
 
-    function funcTabs(dataAttr, inner) {
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(tab => {
-                    tab.classList.remove('tabs-item--active');
-                });
+//     /*табы*/
+//     const tabs = document.querySelectorAll('.tabs-item');
 
-                const dataTab = tab.getAttribute('data-tabs');
+//     function funcTabs(dataAttr, inner) {
+//         tabs.forEach(tab => {
+//             tab.addEventListener('click', () => {
+//                 tabs.forEach(tab => {
+//                     tab.classList.remove('tabs-item--active');
+//                 });
 
-                document.querySelectorAll(inner).forEach(item => {
-                    item.classList.remove('active');
-                    const dataItem = item.getAttribute(dataAttr);
-                    if (dataItem == dataTab) {
-                        item.classList.add('active');
-                    }
-                });
+//                 const dataTab = tab.getAttribute('data-tabs');
 
-                tab.classList.add('tabs-item--active');
-            });
-        });
-    }
+//                 document.querySelectorAll(inner).forEach(item => {
+//                     item.classList.remove('active');
+//                     const dataItem = item.getAttribute(dataAttr);
+//                     if (dataItem == dataTab) {
+//                         item.classList.add('active');
+//                     }
+//                 });
 
-    funcTabs('data-about', '.about-inner__item');
-    funcTabs('data-court', '.court-inner__item');
+//                 tab.classList.add('tabs-item--active');
+//             });
+//         });
+//     }
 
-    /*выбор всех чекбоксов*/
-    const checkAllAdd = document.getElementById('checkAllCompaniesAdd'),
-        checkAllRemove = document.getElementById('checkAllCompaniesRemove'),
-        checkCourtInputs = document.querySelectorAll('.court-table-main .lists-table__box:not(.lists-table__box-name) input'),
-        checkEmailInputs = document.querySelectorAll('.email-table-main .lists-table__box:not(.lists-table__box-name) input'),
-        checkMailInputs = document.querySelectorAll('.mail-table-main .lists-table__box:not(.lists-table__box-name) input'),
-        checkSmsInputs = document.querySelectorAll('.sms-table-main .lists-table__box:not(.lists-table__box-name) input'),
-        checkCompaniesRemove = document.querySelectorAll('.popup-right .lists-table__box:not(.lists-table__box-name) input'),
-        checkCompaniesAdd = document.querySelectorAll('.popup-left .lists-table__box:not(.lists-table__box-name) input'),
-        checkAllAddEmail = document.getElementById('checkAllAddEmail'),
-        checkAllAddSms = document.getElementById('checkAllAddSms'),
-        checkAllCourts = document.getElementById('checkAllCourt'),
-        checkAllMail = document.getElementById('checkAllMail'),
-        popupBtns = document.querySelectorAll('.popup-btn');
+//     funcTabs('data-about', '.about-inner__item');
+//     funcTabs('data-court', '.court-inner__item');
 
-    function checkAllInputs(btnAll, inputs, selector) {
-        if (btnAll) {
-            for (let check = 0; check < inputs.length; check++) {
-                inputs[check].addEventListener("click", function () {
-                    let inputsChecked = document.querySelectorAll(selector).length;
-                    if (inputsChecked < inputs.length) {
-                        btnAll.indeterminate = true;
-                    }
-                });
-            }
+//     /*выбор всех чекбоксов*/
+//     const checkAllAdd = document.getElementById('checkAllCompaniesAdd'),
+//         checkAllRemove = document.getElementById('checkAllCompaniesRemove'),
+//         checkCourtInputs = document.querySelectorAll('.court-table-main .lists-table__box:not(.lists-table__box-name) input'),
+//         checkEmailInputs = document.querySelectorAll('.email-table-main .lists-table__box:not(.lists-table__box-name) input'),
+//         checkMailInputs = document.querySelectorAll('.mail-table-main .lists-table__box:not(.lists-table__box-name) input'),
+//         checkSmsInputs = document.querySelectorAll('.sms-table-main .lists-table__box:not(.lists-table__box-name) input'),
+//         checkCompaniesRemove = document.querySelectorAll('.popup-right .lists-table__box:not(.lists-table__box-name) input'),
+//         checkCompaniesAdd = document.querySelectorAll('.popup-left .lists-table__box:not(.lists-table__box-name) input'),
+//         checkAllAddEmail = document.getElementById('checkAllAddEmail'),
+//         checkAllAddSms = document.getElementById('checkAllAddSms'),
+//         checkAllCourts = document.getElementById('checkAllCourt'),
+//         checkAllMail = document.getElementById('checkAllMail'),
+//         popupBtns = document.querySelectorAll('.popup-btn');
 
-            btnAll.addEventListener("click", function () {
-                for (let check = 0; check < inputs.length; check++) {
-                    inputs[check].checked = btnAll.checked;
-                }
-            });
-        }
-    }
+//     function checkAllInputs(btnAll, inputs, selector) {
+//         if (btnAll) {
+//             for (let check = 0; check < inputs.length; check++) {
+//                 inputs[check].addEventListener("click", function () {
+//                     let inputsChecked = document.querySelectorAll(selector).length;
+//                     if (inputsChecked < inputs.length) {
+//                         btnAll.indeterminate = true;
+//                     }
+//                 });
+//             }
 
-    /*добавить/удалить все компании из таблицы*/
-    checkAllInputs(checkAllAddEmail, checkEmailInputs, '.email-table-main .lists-table__box-check input:checked');
-    checkAllInputs(checkAllCourts, checkCourtInputs, '.court-table-main .lists-table__box:not(.lists-table__box-name) input:checked');
-    checkAllInputs(checkAllAddSms, checkSmsInputs, '.sms-table-main .lists-table__box:not(.lists-table__box-name) input:checked');
-    checkAllInputs(checkAllMail, checkMailInputs, '.mail-table-main .lists-table__box:not(.lists-table__box-name) input:checked');
+//             btnAll.addEventListener("click", function () {
+//                 for (let check = 0; check < inputs.length; check++) {
+//                     inputs[check].checked = btnAll.checked;
+//                 }
+//             });
+//         }
+//     }
 
-    /*добавить/удалить все компании из рассылки в поп-ап*/
-    checkAllInputs(checkAllRemove, checkCompaniesRemove, '.popup-right .lists-table__box:not(.lists-table__box-name) input:checked');
-    checkAllInputs(checkAllAdd, checkCompaniesAdd, '.popup-left .lists-table__box:not(.lists-table__box-name) input:checked');
+//     /*добавить/удалить все компании из таблицы*/
+//     checkAllInputs(checkAllAddEmail, checkEmailInputs, '.email-table-main .lists-table__box-check input:checked');
+//     checkAllInputs(checkAllCourts, checkCourtInputs, '.court-table-main .lists-table__box:not(.lists-table__box-name) input:checked');
+//     checkAllInputs(checkAllAddSms, checkSmsInputs, '.sms-table-main .lists-table__box:not(.lists-table__box-name) input:checked');
+//     checkAllInputs(checkAllMail, checkMailInputs, '.mail-table-main .lists-table__box:not(.lists-table__box-name) input:checked');
 
-    /*popup*/
-    if (popupBtns) {
-        popupBtns.forEach(btn => {
-            btn.addEventListener('click', () => body.classList.add('active'));
-        });
+//     /*добавить/удалить все компании из рассылки в поп-ап*/
+//     checkAllInputs(checkAllRemove, checkCompaniesRemove, '.popup-right .lists-table__box:not(.lists-table__box-name) input:checked');
+//     checkAllInputs(checkAllAdd, checkCompaniesAdd, '.popup-left .lists-table__box:not(.lists-table__box-name) input:checked');
 
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.popup-btn') && !e.target.closest('.popup') || e.target.closest('.popup>span')) {
-                body.classList.remove('active');
-            }
-        });
-    }
-    /*show or hide column*/
-    const filter = document.querySelector('.filter-col');
-    const colCheck = document.querySelectorAll('.filter-col__li input');
-    const colItems = document.querySelectorAll('.lists-table__col[data-col]');
+//     /*popup*/
+//     if (popupBtns) {
+//         popupBtns.forEach(btn => {
+//             btn.addEventListener('click', () => body.classList.add('active'));
+//         });
 
-    if (filter) {
-        filter.addEventListener('click', () => {
-            filter.classList.add('active');
-        });
-    }
+//         document.addEventListener('click', (e) => {
+//             if (!e.target.closest('.popup-btn') && !e.target.closest('.popup') || e.target.closest('.popup>span')) {
+//                 body.classList.remove('active');
+//             }
+//         });
+//     }
+//     /*show or hide column*/
+//     const filter = document.querySelector('.filter-col');
+//     const colCheck = document.querySelectorAll('.filter-col__li input');
+//     const colItems = document.querySelectorAll('.lists-table__col[data-col]');
 
-    colCheck.forEach(item => {
-        item.addEventListener('input', () => {
-            let colId = item.getAttribute("id");
-            colItems.forEach(col => {
-                let dataCol = col.getAttribute('data-col');
-                if (item.checked == false && dataCol == colId) {
-                    col.style.display = "none";
-                }
-                if (item.checked == true && dataCol == colId) {
-                    col.style.display = "block";
-                }
-            });
-            filter.classList.remove('active');
-            updateTable();
-        });
-    });
-    function removeClassActive(e) {
-        if (!e.target.closest('.filter-col')) {
-            filter.classList.remove('active');
-        }
-    }
-    document.addEventListener('click', removeClassActive);
+//     if (filter) {
+//         filter.addEventListener('click', () => {
+//             filter.classList.add('active');
+//         });
+//     }
 
-    /*move columns*/
-    const table = document.querySelector('#table');
-    let droppedItem = null;
-    let draggedItem = null;
+//     colCheck.forEach(item => {
+//         item.addEventListener('input', () => {
+//             let colId = item.getAttribute("id");
+//             colItems.forEach(col => {
+//                 let dataCol = col.getAttribute('data-col');
+//                 if (item.checked == false && dataCol == colId) {
+//                     col.style.display = "none";
+//                 }
+//                 if (item.checked == true && dataCol == colId) {
+//                     col.style.display = "block";
+//                 }
+//             });
+//             filter.classList.remove('active');
+//             updateTable();
+//         });
+//     });
+//     function removeClassActive(e) {
+//         if (!e.target.closest('.filter-col')) {
+//             filter.classList.remove('active');
+//         }
+//     }
+//     document.addEventListener('click', removeClassActive);
 
-    colItems.forEach(col => {
-        col.setAttribute("draggable", "true");
-        col.addEventListener("dragstart", dragstart);
-        col.addEventListener("dragenter", dragenter);
-        col.addEventListener("dragover", (e) => e.preventDefault());
-        col.addEventListener("drop", drop);
-        col.addEventListener("dragend", dragend);
-    });
+//     /*move columns*/
+//     const table = document.querySelector('#table');
+//     let droppedItem = null;
+//     let draggedItem = null;
 
-    function dragstart() {
-        draggedItem = this;
-    }
+//     colItems.forEach(col => {
+//         col.setAttribute("draggable", "true");
+//         col.addEventListener("dragstart", dragstart);
+//         col.addEventListener("dragenter", dragenter);
+//         col.addEventListener("dragover", (e) => e.preventDefault());
+//         col.addEventListener("drop", drop);
+//         col.addEventListener("dragend", dragend);
+//     });
 
-    function dragend() {
-        colItems.forEach(col => col.classList.remove('active'));
-        draggedItem = null;
-    }
+//     function dragstart() {
+//         draggedItem = this;
+//     }
 
-    function dragenter(e) {
-        e.preventDefault();
+//     function dragend() {
+//         colItems.forEach(col => col.classList.remove('active'));
+//         draggedItem = null;
+//     }
 
-        if (draggedItem !== droppedItem) {
-            droppedItem = this;
-        }
+//     function dragenter(e) {
+//         e.preventDefault();
 
-        colItems.forEach(col => col.classList.add('active'));
-        this.classList.remove('active');
-    }
+//         if (draggedItem !== droppedItem) {
+//             droppedItem = this;
+//         }
 
-    function drop(e) {
-        e.stopPropagation();
-        if (droppedItem) {
+//         colItems.forEach(col => col.classList.add('active'));
+//         this.classList.remove('active');
+//     }
 
-            let array = Array.from(droppedItem.parentElement.children);
+//     function drop(e) {
+//         e.stopPropagation();
+//         if (droppedItem) {
 
-            let indexdraggedItem = array.indexOf(draggedItem);
-            let indexdroppedItem = array.indexOf(this);
+//             let array = Array.from(droppedItem.parentElement.children);
 
-            if (indexdraggedItem > indexdroppedItem) {
-                table.insertBefore(draggedItem, this);
-            } else {
-                table.insertBefore(draggedItem, this.nextElementSibling);
-            }
-            updateTable();
-        }
-    }
+//             let indexdraggedItem = array.indexOf(draggedItem);
+//             let indexdroppedItem = array.indexOf(this);
 
-    /*resize columns*/
-    function updateTable() {
-        $('#table').colResizable({ disable: true });
+//             if (indexdraggedItem > indexdroppedItem) {
+//                 table.insertBefore(draggedItem, this);
+//             } else {
+//                 table.insertBefore(draggedItem, this.nextElementSibling);
+//             }
+//             updateTable();
+//         }
+//     }
 
-        resizeCol();
-    }
+//     /*resize columns*/
+//     function updateTable() {
+//         $('#table').colResizable({ disable: true });
 
-    function resizeCol() {
-        $("#table").colResizable({
-            minWidth: 50,
-            liveDrag: true,
-        });
-    }
-    resizeCol();
+//         resizeCol();
+//     }
 
-    /*поиск*/
+//     function resizeCol() {
+//         $("#table").colResizable({
+//             minWidth: 50,
+//             liveDrag: true,
+//         });
+//     }
+//     resizeCol();
 
-    // fetch('../db/db.json').then(response => response.json()).then(data => {
-    // const companies = [];
-    // const ul = document.querySelector('.list');
-    //     const search = document.querySelector('.popup input');
+//     /*поиск*/
 
-    //     data.forEach(item => {
-    //         companies.push(...item.companies);
-    //     });
+//     // fetch('../db/db.json').then(response => response.json()).then(data => {
+//     // const companies = [];
+//     // const ul = document.querySelector('.list');
+//     //     const search = document.querySelector('.popup input');
 
-    //     function getOpt(word, companies) {
+//     //     data.forEach(item => {
+//     //         companies.push(...item.companies);
+//     //     });
 
-    //         return companies.filter(company => {
-    //             const wordss = new RegExp(word, 'gi');
+//     //     function getOpt(word, companies) {
 
-    //             return company.name.match(wordss);
-    //         });
-    //     }
+//     //         return companies.filter(company => {
+//     //             const wordss = new RegExp(word, 'gi');
 
-    //     function dispOpt() {
-    //         const test = getOpt(this.value, companies);
-    //         let compName = test.map(name => {
-    //             return `<li>${name.name}</li>`;
-    //         }).join('');
+//     //             return company.name.match(wordss);
+//     //         });
+//     //     }
+
+//     //     function dispOpt() {
+//     //         const test = getOpt(this.value, companies);
+
+//     //         let compName = test.map(name => {
+
+//     //             return `<li>${name.name}</li>`;
+//     //         }).join('');
 
 
-    //         ul.innerHTML = compName;
-    //     }
+//     //         ul.innerHTML = compName;
+//     //     }
 
-    //     search.addEventListener('input', dispOpt);
+//     //     search.addEventListener('input', dispOpt);
 
-    // }).catch(err => console.error("failed", err));
-});
+//     // }).catch(err => console.error("failed", err));
+// });
 
-function objects(id_cadastr, id_companys){
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://127.0.0.1:8000/infoAboutObj/", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    var value = {
-        "id_cadastr": id_cadastr,
-        "id_companys":id_companys
-    }
-    xhr.send(JSON.stringify(value));
+// function objects(id_cadastr, id_companys){
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", "http://127.0.0.1:8000/infoAboutObj/", true);
+//     xhr.setRequestHeader('Content-Type', 'application/json');
+//     var value ={
+//         "id_cadastr": id_cadastr,
+//         "id_companys":id_companys
+//     }
+//     xhr.send(JSON.stringify(value));
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var mas = xhr.responseText;
+//     xhr.onreadystatechange = function() {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//         var mas = xhr.responseText;
 
-            var jsonResponse = JSON.parse(mas);
-            jsonResponse = JSON.parse(jsonResponse);
+//         var jsonResponse = JSON.parse(mas);
+//         jsonResponse = JSON.parse(jsonResponse);
 
-            var header = document.getElementById("CadastrNum");
-            header.textContent = jsonResponse["cadastral_number"];
+//         var header = document.getElementById("CadastrNum");
+//         header.textContent = jsonResponse["cadastral_number"];
 
-            header = document.getElementById("ObjView");
-            header.textContent = jsonResponse["object_type"];
+//        header = document.getElementById("ObjView");
+//         header.textContent = jsonResponse["object_type"];
 
-            header = document.getElementById("TypeRight");
-            header.textContent = jsonResponse["type_right"];
+//         header = document.getElementById("TypeRight");
+//         header.textContent = jsonResponse["type_right"];
 
-            header = document.getElementById("NumRight");
-            header.textContent = jsonResponse["number_right"];
+//         header = document.getElementById("NumRight");
+//         header.textContent = jsonResponse["number_right"];
 
-            header = document.getElementById("FIO");
-            header.textContent = jsonResponse[ "company_name"];
+//         header = document.getElementById("FIO");
+//         header.textContent = jsonResponse[ "company_name"];
 
-            header = document.getElementById("NameHolder");
-            header.textContent = jsonResponse[ "link_statement"];
-        }
-    }
-}
-
-function createLeters(){
-    let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
-
-    let values = [];
-    if (checkboxes.length == 0 || checkboxes.length > 1) {
-        alert("Необходимо выбрать только одну рассылку")
-    } else {
-        for (let i = 0; i < checkboxes.length; i++) {
-            values.push([checkboxes[i].value]);
-            // alert(checkboxes[i].value);
-        }
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/emailCount/createLetters/", true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(values)); // Отправьте массив значений
-        xhr.responseType = "blob";
-        xhr.onreadystatechange = function () {
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var fileName = "downloaded_file.docx"; // Задайте имя файла для скачивания
-                    var a = document.createElement("a");
-                    a.href = window.URL.createObjectURL(xhr.response);
-                    a.download = fileName;
-                    a.style.display = "none";
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                }
-            };
-
-            xhr.send();
-        }
-    }
-}
+//         header = document.getElementById("NameHolder");
+//         header.textContent = jsonResponse[ "link_statement"];
+//     }
+// }
+// }

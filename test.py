@@ -2,13 +2,21 @@ import json
 import psycopg2
 # from PIL import Image, ImageDraw
 from psycopg2 import Error
-
+from sshtunnel import SSHTunnelForwarder
 def db():
+    # Connect to a server using the ssh keys. See the sshtunnel documentation for using password authentication
+    ssh_tunnel = SSHTunnelForwarder(
+        ('10.13.13.2', 22),
+        ssh_pkey="~/.ssh/id_rsa",
+        ssh_username="meadowse",
+        remote_bind_address=('localhost', 5432), )
+    ssh_tunnel.start()
     return psycopg2.connect(user="meadowse",
-                            password="Comebackplz56!!",  # пароль, который указали при установке PostgreSQL
-                            host="127.0.0.1",
-                            port="5432",
-                            database="meadowse")
+                                      # пароль, который указали при установке PostgreSQL
+                                      password="Comebackplz56!!",
+                                      host="localhost",
+                                      port=ssh_tunnel.local_bind_port,
+                                      database="meadowse")
 
 def Insert_db(query, args=(), one=False):
     connection = db()
