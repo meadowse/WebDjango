@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>{% block name %}{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'dbServer/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <link rel="icon" href="{% static 'dbServer/images/favicon.ico'%}">
+</head>
+<body>
+    <div class="overlay"></div>
+    <img class="load-img" src="{% static 'dbServer/images/load.gif'%}" alt="">
+    <div class="update-company popup">
+        <span></span>
+         <form class="update-company__form" action="{% url 'addNewNewssender' %}" method="get">
+            <input type="hidden" name="idMailing" value="{{ types_mailing }}">
+            <input class="update-company__input mailers-input" type="text" name="name" placeholder="Введите название рассылки">
+               <select name="id" class="update-company__item drop main-btn">
+                         {% for j in templateForSend %}
+                                    <option value="{{ j.id }}">{{ j.template }}</option>
+                        {% endfor %}
+                </select>
+{#                <input class="update-company__input mailers-input" type="text" name="phone"#}
+{#                    placeholder="Введите привязанные контакты">#}
+{#            <input class="update-company__input mailers-input" type="text" name="email"#}
+{#                    placeholder="Введите привязанные email">#}
+                <button class="update-company__btn main-btn">Добавить</button>
+                </span>
+        </form>
+    </div>
+    <header class="header">
+        <div class="header-wrap">
+            <a class="header-logo__link" href="/">
+                <img class="header-logo__icon" src="{% static 'dbServer/images/logo.png'%}" alt="logo">
+            </a>
+            <form class="header-form form" action="" class="lists-table__box">
+                {% csrf_token %}
+                <input class="header-input input" type="text" placeholder="Поиск и фильтр">
+                <button class="header-btn form-btn find" type="submit"></button>
+                <div class="filter-search__wrap">
+                    <div class="filter-search">
+                        <div class="filter-search__item-block">
+                            <div class="filter-search__item" id="revenue">
+                                <span class="filter-search__item-span">Выручка, &#8381;</span>
+                                <div class="filter-block">
+                                    <div class="filter-drop drop">
+                                        <span>Не выбрано</span>
+                                        <div class="drop__list">
+                                            <div class="drop__item">Не выбрано</div>
+                                            <div class="drop__item" data-drop="1">Больше</div>
+                                            <div class="drop__item" data-drop="-1">Меньше</div>
+                                            <div class="drop__item" data-drop="0">Равно</div>
+                                        </div>
+                                    </div>
+                                    <span class="filter-search__input">
+                                        <input type="number">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="filter-search__item">
+                                <span class="filter-search__item-span">Источник данных</span>
+                                <div class="filter-block">
+                                    <div class="filter-drop drop source">
+                                        <span>Не выбрано</span>
+                                        <div class="drop__list">
+                                            <div class="drop__item">Не выбрано</div>
+                                            <div class="drop__item" data-drop="БЦ, ТЦ">БЦ, ТЦ</div>
+                                            <div class="drop__item" data-drop="Кадастровые компании">
+                                                Кадастровые&nbsp;компании</div>
+                                            <div class="drop__item" data-drop="СУД">СУД</div>
+                                            <div class="drop__item" data-drop="Битрикс24">Битрикс24</div>
+                                            <div class="drop__item" data-drop="Реестр самостроя">Реестр&nbsp;самостроя
+                                            </div>
+                                            <div class="drop__item" data-drop="Чеко">Чеко</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-search__item-block">
+                            <div class="filter-search__item filter-search__item-empty">
+                                <p class="text">Исключить пустые значения</p>
+                                <ul class="filter-col__list">
+                                    <li class="toggle-col__li">
+                                        <label>
+                                            <input type="checkbox" id="legal_address">
+                                            <span class="text">Юр. адрес</span>
+                                        </label>
+                                    </li>
+                                    <li class="toggle-col__li">
+                                        <label>
+                                            <input type="checkbox" id="position_head">
+                                            <span class="text">Должность руководителя</span>
+                                        </label>
+                                    </li>
+                                    <li class="toggle-col__li">
+                                        <label>
+                                            <input type="checkbox" id="fio_head">
+                                            <span class="text">ФИО руководителя</span>
+                                        </label>
+                                    </li>
+                                    <li class="toggle-col__li">
+                                        <label>
+                                            <input type="checkbox" id="telephone">
+                                            <span class="text">Телефоны</span>
+                                        </label>
+                                    </li>
+                                    <li class="toggle-col__li">
+                                        <label>
+                                            <input type="checkbox" id="mail">
+                                            <span class="text">Почты</span>
+                                        </label>
+                                    </li>
+                                    <li class="toggle-col__li">
+                                        <label>
+                                            <input type="checkbox" id="website">
+                                            <span class="text">Сайт</span>
+                                        </label>
+                                    </li>
+                                    <li class="toggle-col__li">
+                                        <label>
+                                            <input type="checkbox" id="type_activity">
+                                            <span class="text">ОКВЭД</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="filter-search__item filter-newsletter">
+                                <p class="text">Участие в рассылке</p>
+                                <ul class="filter-col__list">
+                                    <li class="toggle-col__li" id="email_newsletter">
+                                        <span class="text">E-mail</span>
+                                        <div class="filter-drop drop">
+                                            <span>Не выбрано</span>
+                                            <div class="drop__list">
+                                                <div class="drop__item">Не выбрано</div>
+                                                <div class="drop__item" data-drop="1">Участвовал</div>
+                                                <div class="drop__item" data-drop="0">Не участвовал</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="toggle-col__li" id="mail_newsletter">
+                                        <span class="text">Почта</span>
+                                        <div class="filter-drop drop">
+                                            <span>Не выбрано</span>
+                                            <div class="drop__list">
+                                                <div class="drop__item">Не выбрано</div>
+                                                <div class="drop__item" data-drop="1">Участвовал</div>
+                                                <div class="drop__item" data-drop="0">Не участвовал</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="toggle-col__li" id="sms_mailing">
+                                        <span class="text">SMS</span>
+                                        <div class="filter-drop drop">
+                                            <span>Не выбрано</span>
+                                            <div class="drop__list">
+                                                <div class="drop__item">Не выбрано</div>
+                                                <div class="drop__item" data-drop="1">Участвовал</div>
+                                                <div class="drop__item" data-drop="0">Не участвовал</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="toggle-col__li" id="the_bell">
+                                        <span class="text">Звонки</span>
+                                        <div class="filter-drop drop">
+                                            <span>Не выбрано</span>
+                                            <div class="drop__list">
+                                                <div class="drop__item">Не выбрано</div>
+                                                <div class="drop__item" data-drop="1">Участвовал</div>
+                                                <div class="drop__item" data-drop="0">Не участвовал</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-btns">
+                        <button class="filter-btn main-btn find" type="submit">Найти</button>
+                        <button class="filter-btn main-btn reset" type="submit">Сбросить</button>
+                    </div>
+                </div>
+            </form>
+            {% if request.user.is_authenticated %}
+            <a class="login" href="{% url 'logout' %}"><button class="login">Выйти</button></a>
+            {% else %}
+            <form class="form-login" action="/login" method="POST">
+                {% csrf_token %}
+                <button class="login" type="submit">Войти</button>
+            </form>
+            {% endif %}
+        </div>
+    </header>
+    {% if request.user.is_authenticated %}
+    <main class="main">
+        <div class="sidebar">
+            <nav>
+                <ul class="sidebar-menu menu">
+                    <li class="menu-li" data-url="#">
+                        <a class="menu-link" href="#">
+                            <img src="{% static 'dbServer/images/monitor.png' %}" alt="">Рабочий стол</a>
+                    </li>
+                    <li class="menu-li" data-url={% url 'home' %}>
+                        <a class="menu-link" href={% url 'home' %}>
+                            <img src="{% static 'dbServer/images/burger.png'%}" alt="">Списки</a>
+                    </li>
+                    <li class="menu-li" data-url="/objects">
+                        <a class="menu-link" href="{% url 'objects' %}">
+                            <img src="{% static 'dbServer/images/object.png' %}" alt="">Объекты</a>
+                    </li>
+                    <li class="menu-li" data-url={% url 'mainCourt' %}>
+                        <a class="menu-link" href={% url 'mainCourt' %}>
+                            <img src="{% static 'dbServer/images/court.png' %}" alt="">Суд</a>
+                    </li>
+                    <li class="menu-li" data-url={% url 'manCourt' %}>
+                        <a class="menu-link" href={% url 'manCourt' %}>
+                            <img src="{% static 'dbServer/images/email.png' %}" alt="">Email</a>
+                    </li>
+                    <li class="menu-li" data-url={% url 'EmalePajemanCourt' %}>
+                        <a class="menu-link" href={% url 'EmalePajemanCourt' %}>
+                            <img src="{% static 'dbServer/images/post.png' %}" alt="">Почта</a>
+                    </li>
+                    <li class="menu-li" data-url={% url 'smsmainCourt' %}>
+                        <a class="menu-link" href={% url 'smsmainCourt' %}>
+                            <img src="{% static 'dbServer/images/sms.png' %}" alt="">СМС</a>
+                    </li>
+                    <li class="menu-li" >
+                        <a class="menu-link" href={% url 'Calsman' %}>
+                            <img src="{% static 'dbServer/images/phone.png' %}" alt="">Звонки</a>
+                    </li>
+                    <li class="menu-li" data-url="/analitycs">
+                        <a class="menu-link" href="../dbServer/analitycs.html">
+                            <img src="{% static 'dbServer/images/analytics.png' %}" alt="">Аналитика</a>
+                    </li>
+                    <li class="menu-li" data-url="/economy">
+                        <a class="menu-link" href="../dbServer/economy.html">
+                            <img src="{% static 'dbServer/images/economycs.png' %}" alt="">Экономика</a>
+                    </li>
+                    <li class="menu-li" data-url="/settings">
+                        <a class="menu-link" href="../dbServer/settings.html">
+                            <img src="{% static 'dbServer/images/settings.png' %}" alt="">Настройки</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        {% block body %}
+        {% endblock %}
+    </main>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script defer src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{% static 'dbServer/js/col-resize.min.js' %}"></script>
+    <script src="{% static 'dbServer/js/main.js' %}"></script>
+    {% endif %}
+</body>
+</html>

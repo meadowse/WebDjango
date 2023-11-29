@@ -1,0 +1,256 @@
+{% extends 'dbServer/pattern.html' %}
+{% block body %}
+{% load static %}
+<div class="main-content content">
+    <div class="about content-inner">
+        <a class="about-prev prev" href="{% url 'home' %}"><img src="{% static 'dbServer/images/arr-left.png' %}" alt=""></a>
+        <div class="content-wrap about-wrap">
+            <div class="about-left content-left">
+                <div class="top-item about-top__company">{{ Companies.company_name }}</div>
+                <div class="about-inner__info">
+                    <div class="company-inner__id text">id: <span>{{ title }}</span></div>
+                    <div class="tabs">
+                        <div class="tabs-item text tabs-item--active" data-tabs="history">Основное</div>
+                        <div class="tabs-item text" data-tabs="obj">Объекты</div>
+                    </div>
+                </div>
+                <div class="about-inner__item tab-content history tabs--active" data-tab="history">
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">ИНН</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.inn_company }}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Юр. Адрес</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.legal_address}}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Должность руководителя</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.position_head }}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">ФИО руководителя</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.fio_head }}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Телефоны</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text text-flex">{% for f in Companies.telephone %}<a href="tel:{{ f }}">{{ f }}</a>{% endfor %}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Почты</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text text-flex">{% for f in Companies.mail %}<a href="mailto:{{ f }}">{{ f }}</a>{% endfor %}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Сайт</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text"><a href="{{ Companies.website }}" target="_blank">{{ Companies.website }}</a></p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">ОКВЭД</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.type_activity }}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Выручка</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.revenue }}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Количество сотрудников</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.number_employees }}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Дата регистрации компании</p>
+                        </div>
+                        <div class="about-table__item">
+                            <p class="text">{{ Companies.date_registration }}</p>
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Кол-во объектов в собственности</p>
+                        </div>
+                        <div class="about-table__item">
+                            {% if Companies.number_object_owned %}
+                            <p class="text">{{ Companies.number_object_owned }}</p>
+                            {%else%}
+                            <p class="text">0</p>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Кол-во объектов в аренде</p>
+                        </div>
+                        <div class="about-table__item">
+                            {% if Companies.number_object_rent %}
+                            <p class="text">{{ Companies.number_object_rent }}</p>
+                            {%else%}
+                            <p class="text">0</p>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Кол-во ЗУ в собственности</p>
+                        </div>
+                        <div class="about-table__item">
+                            {% if Companies.number_land_owned %}
+                            <p class="text">{{Companies.number_land_owned}}</p>
+                            {%else%}
+                            <p class="text">0</p>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="about-table__row">
+                        <div class="about-table__item">
+                            <p class="text">Кол-во ЗУ в аренде</p>
+                        </div>
+                        <div class="about-table__item">
+                            {% if Companies.number_land_rent %}
+                            <p class="text">{{Companies.number_land_rent}}</p>
+                            {%else%}
+                            <p class="text">0</p>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+                <div class="about-inner__item tab-content about-obj" data-tab="obj">
+                    <div class="about-obj__box">
+                        <p class="text fw-600">Объекты в собственности</p>
+                    </div>
+                    {% if obj%}
+                    {% for i in obj %}
+                    <div class="about-obj__box" onclick="objects({{ i.id_cadastral_number }}, {{ Companies.id }})">
+                        <p class="text text-obj">{{ i.objects_owned }}</p>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="about-obj__box">
+                        <p class="text no-obj">Объекты отсутствуют</p>
+                    </div>
+                    {% endif %}
+                    <div class="about-obj__box">
+                        <p class="text fw-600">Объекты в аренде</p>
+                    </div>
+                    {% if ObjInArend%}
+                    {% for i in ObjInArend %}
+                    <div class="about-obj__box" onclick="objects({{ i.id_cadastral_number }}, {{ Companies.id }})">
+                        <p class="text text-obj">{{ i.objects_owned }}</p>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="about-obj__box">
+                        <p class="text no-obj">Объекты отсутствуют</p>
+                    </div>
+                    {%endif%}
+                    <div class="about-obj__box">
+                        <p class="text fw-600">Земельные участки в собственности</p>
+                    </div>
+                    {% if earthSobstv%}
+                    {% for i in earthSobstv %}
+                    <div class="about-obj__box" onclick="objects({{ i.id_cadastral_number }}, {{ Companies.id }})">
+                        <p class="text text-obj">{{ i.objects_owned }}</p>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="about-obj__box">
+                        <p class="text no-obj">Объекты отсутствуют</p>
+                    </div>
+                    {%endif%}
+                    <div class="about-obj__box">
+                        <p class="text fw-600">Земельные участки в аренде</p>
+                    </div>
+                    {% if earthInArend %}
+                    {% for i in earthInArend %}
+                    <div class="about-obj__box" onclick="objects({{ i.id_cadastral_number }}, {{ Companies.id }})">
+                        <p class="text text-obj">{{ i.objects_owned }}</p>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="about-obj__box">
+                        <p class="text no-obj">Объекты отсутствуют</p>
+                    </div>
+                    {%endif%}
+                    {##}
+                    {# {% if earthInArend%}#}
+                    {# {% for i in earthInArend%}#}
+                    {# <p class="text">#}
+                        {# {{ i.objects_owned }}#}
+                        {# </p>#}
+                    </div>
+                {# {% endfor %}#}
+                {# {% else %}#}
+                {# #}
+                {# <div class="about-obj__box">#}
+                    {# <p class="text no-obj">Объекты отсутствуют</p>#}
+                    {# </div>#}
+                {# {%endif%}#}
+            </div>
+            <div class="about-right content-right">
+                <div class="about-inner__item tab-content history tabs--active" data-tab="history">
+                    <p class="top-item">История взаимодействия</p>
+{#                    <div class="history-block content-block">#}
+{#                        <p class="history-box text content-box">Июль, 2023</p>#}
+{#                    </div>#}
+                    {% for i in history %}
+                    <div class="history-item content-item">
+                        <p class="history-date text content-date"><span>{{ i.date }}</span></p>
+                        <p class="history-box text content-box">{{ i.description }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="about-inner__item tab-content about-obj" data-tab="obj">
+                    <p class="top-item about-top__obj">Описание объекта</p>
+                    <div class="about-wrapper">
+                        <p class="about__item text">Кадастровый номер<span id="CadastrNum"></span>
+                        </p>
+                        <p class="about__item text">Вид объекта<span id="ObjView"></span></p>
+                        <p class="about__item text">Вид права<span id="TypeRight"></span></p>
+                        <p class="about__item text">№ регистрации права<span id="NumRight"></span></p>
+                        <p class="about__item text">Название правообладателя<span id="FIO"></span></p>
+                    </div>
+                    <button class="about-obj__btn main-btn" onclick="extract()">Открыть выписку объекта</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
