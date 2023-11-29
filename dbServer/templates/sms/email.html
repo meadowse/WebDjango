@@ -1,0 +1,172 @@
+{% extends 'dbServer/pattern.html' %}
+{% block body %}
+{% load static %}
+<div class="main-content content">
+    <div class="email mail-wrap">
+        <div class="mailers-btns__wrap">
+            <div class="mailers-btns">
+                <button class="mailers-btn main-btn popup-btn" id="emailing">+ Добавить email рассылку</button>
+                <button class="mailers-btn main-btn" id="sendMailing">Отправить рассылку</button>
+            </div>
+            <div class="mailers-btns__box">
+                <button class="mailers-btn main-btn" id="sendTestEmail">Отправить тестовое письмо</button>
+                <input class="mailers-input" type="text" placeholder="Введите email">
+            </div>
+        </div>
+            <div class="email-table-main table" id="table">
+                <div class="lists-table__col">
+                    <div class="lists-table__box">
+                        <label for="check">
+                            <input class="checkAllInput" id="checkAll" type="checkbox">
+                            <span></span>
+                        </label>
+                    </div>
+                    <div class="lists-table__box">
+                        <label for="check">
+                            <input type="checkbox" value="{{ i.id}},{{ i.template}},{{ i.contacts }}">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="lists-table__col lists-table__col-name">
+                    <div class="lists-table__box lists-table__box-name">
+                        <div class="filter-col">
+                            <ul class="filter-col__list">
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" disabled checked>
+                                        <span class="text">Наименование рассылки</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col2">
+                                        <span class="text">Шаблон</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col3">
+                                        <span class="text">Кол-во писем</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col4">
+                                        <span class="text">Дата создания</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col5">
+                                        <span class="text">Дата отправки</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col6">
+                                        <span class="text">Ответственный</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col7">
+                                        <span class="text">Статус</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col8">
+                                        <span class="text">Привязанные контакты</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <p class="text head-text">Наименование <br>рассылки</p>
+                    </div>
+                    {% for i in Companies %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.id}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col2">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Шаблон</p>
+                    </div>
+                    {% for i in Companies %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.template }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col3">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Кол-во писем</p>
+                    </div>
+                    {% for i in Companies %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.quantity }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col4">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Дата создания</p>
+                    </div>
+                    {% for i in Companies %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.date_creation }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col5">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Дата отправки</p>
+                    </div>
+                    {% for i in Companies %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.date_dispatch }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col6">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Ответственный</p>
+                    </div>
+                    {% for i in Companies %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.fio }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col7">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Статус</p>
+                    </div>
+                    {% for i in Companies %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.status}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col8">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Привязанные контакты</p>
+                    </div>
+                    <div class="lists-table__box">
+                        <p class="text">
+                            {% for i in Companies %}
+                            {% for j in i.contacts %}
+                            {% for f in j %}
+                            <a> {{ f }}</a>, <br>
+                            {% endfor %}
+                            {% endfor %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

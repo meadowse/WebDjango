@@ -1,0 +1,195 @@
+{% extends 'dbServer/pattern.html' %}
+{% block name %} {{ title }}{% endblock %}
+{% block body %}
+<div class="main-content content">
+    <div class="mail lists">
+        <div class="mail-wrap">
+            <div class="mailers-btns">
+                <button class="court-btn main-btn popup-btn" id="letter"> + Добавить почтовую рассылку</button>
+                <button class="court-btn main-btn" id="removeletter" onclick="removeLine()"> - Удалить почтовую рассылку</button>
+                <button class="court-btn main-btn" id="sendBXing" onclick="createLetters()">Создать письма</button>
+                <button class="court-btn main-btn" id="sendBX" onclick="createLabels()">Создать наклейки</button>
+            </div>
+            <div class="mail-table-main table" id="table">
+                <div class="lists-table__col">
+                    <div class="lists-table__box">
+                        <label for="check">
+                            <input class="checkAllInput" id="checkAll" type="checkbox">
+                            <span></span>
+                        </label>
+
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <label for="check">
+                            <input type="checkbox" class="remove" value="{{ i.id }}">
+                            <span></span>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col lists-table__col-name">
+                    <div class="lists-table__box lists-table__box-name">
+                        <div class="filter-col">
+                            <ul class="filter-col__list">
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" disabled checked>
+                                        <span class="text">Наименование рассылки</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col2">
+                                        <span class="text">Шаблон</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col3">
+                                        <span class="text">Кол-во писем</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col4">
+                                        <span class="text">Дата создания</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col5">
+                                        <span class="text">Дата отправки</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col6">
+                                        <span class="text">Ответственный</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col7">
+                                        <span class="text">Статус</span>
+                                    </label>
+                                </li>
+                                <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col8">
+                                        <span class="text">Привязанные контакты</span>
+                                    </label>
+                                </li>
+                                 <li class="filter-col__li">
+                                    <label>
+                                        <input type="checkbox" checked id="col9">
+                                        <span class="text">Привязанные email</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <p class="text head-text">Наименование<br>рассылки</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">
+{#                            {% if i.status != 'Отправлено' %}#}
+                                <a href="{{i.id}}/">{{ i.mailing_list_name}}</a>
+{#                            {% else %}{{ i.mailing_list_name}}{% endif %}#}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col2">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Шаблон</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.template }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col3">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Кол-во писем</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.quantity }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col4">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Дата создания</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.date_creation }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col5">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Дата отправки</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.date_dispatch }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col6">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Ответственный</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.fio }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col7">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Статус</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.status}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" data-col="col8">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Привязанные контакты</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">
+                           {% for j in i.contacts.0 %}
+                               <a> {{ j }}</a>, <br>
+                           {% endfor %}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            <div class="lists-table__col" data-col="col9">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Привязанные email</p>
+                    </div>
+                    {% for i in mail %}
+                    <div class="lists-table__box">
+                        <p class="text">
+                            {% for j in i.contacts.1 %}
+                                <a> {{ j }}</a>, <br>
+                            {% endfor %}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

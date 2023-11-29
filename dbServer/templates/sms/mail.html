@@ -1,0 +1,148 @@
+{% extends 'dbServer/pattern.html' %}
+{% block body %}
+{% load static %}
+<div class="main-content content">
+    <div class="mail mail-wrap">
+        <div class="mailers-btns">
+            <button class="mailers-btn main-btn popup-btn" id="mailing">+ Добавить почтовую рассылку</button>
+            <button class="mailers-btn main-btn" id="letters">Создать письма</button>
+            <button class="mailers-btn main-btn" id="stickers">Создать наклейки</button>
+        </div>
+        <div class="mail-table-main table" id="table">
+            <div class="lists-table__col">
+                <div class="lists-table__box">
+                    <label for="check">
+                        <input id="checkAllAddMail" type="checkbox">
+                        <span></span>
+                    </label>
+                </div>
+                <div class="lists-table__box">
+                    <label for="check">
+                        <input type="checkbox">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="lists-table__col lists-table__col-name">
+                <div class="lists-table__box lists-table__box-name">
+                    <div class="filter-col">
+                        <ul class="filter-col__list">
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" disabled checked>
+                                    <span class="text">Наименование рассылки</span>
+                                </label>
+                            </li>
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col2">
+                                    <span class="text">Шаблон</span>
+                                </label>
+                            </li>
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col3">
+                                    <span class="text">Кол-во писем</span>
+                                </label>
+                            </li>
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col4">
+                                    <span class="text">Дата создания</span>
+                                </label>
+                            </li>
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col5">
+                                    <span class="text">Дата отправки</span>
+                                </label>
+                            </li>
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col6">
+                                    <span class="text">Ответственный</span>
+                                </label>
+                            </li>
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col7">
+                                    <span class="text">Статус</span>
+                                </label>
+                            </li>
+                            <li class="filter-col__li">
+                                <label>
+                                    <input type="checkbox" checked id="col8">
+                                    <span class="text">Привязанные контакты</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="text head-text">Наименование <br>рассылки</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">1</p>
+                </div>
+            </div>
+            <div class="lists-table__col" data-col="col2">
+                <div class="lists-table__box">
+                    <p class="text head-text">Шаблон</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">Легализация самостроя</p>
+                </div>
+            </div>
+            <div class="lists-table__col" data-col="col3">
+                <div class="lists-table__box">
+                    <p class="text head-text">Кол-во писем</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">1593</p>
+                </div>
+            </div>
+            <div class="lists-table__col" data-col="col4">
+                <div class="lists-table__box">
+                    <p class="text head-text">Дата создания</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">12.05.2023</p>
+                </div>
+            </div>
+            <div class="lists-table__col" data-col="col5">
+                <div class="lists-table__box">
+                    <p class="text head-text">Дата отправки</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">17.05.2023</p>
+                </div>
+            </div>
+            <div class="lists-table__col" data-col="col6">
+                <div class="lists-table__box">
+                    <p class="text head-text">Ответственный</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">Степанов Виталий Александрович</p>
+                </div>
+            </div>
+            <div class="lists-table__col" data-col="col7">
+                <div class="lists-table__box">
+                    <p class="text head-text">Статус</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">Отправлено</p>
+                </div>
+            </div>
+            <div class="lists-table__col" data-col="col8">
+                <div class="lists-table__box">
+                    <p class="text head-text">Привязанные контакты</p>
+                </div>
+                <div class="lists-table__box">
+                    <p class="text">
+                        <a href="callsto:zak.2@mosproektkompleks.ru">zak.2@mosproektkompleks.ru</a>, <br>
+                        <a href="tel:84951500563">8(495)150-05-63</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
