@@ -1,0 +1,120 @@
+{% extends 'dbServer/companiesInfo.html' %}
+{% block table %}
+<table class="blockLeftTable " cellspacing="0" cellpadding="0">
+           <tbody>
+            <tr>
+                <td><p class="text">ИНН</p></td>
+                <td><p class="text">{{ Companies.inn_company }}</p></td>
+            </tr>
+<tr>
+    <td><p class="text">Юр. Адрес</p></td>
+    <td><p class="text">{{ Companies.legal_address }}</p></td>
+            </tr>
+            <tr>
+                <td><p class="text">Должность руководителя</p></td>
+                <td><p class="text">{{ Companies.position_head }}</p></td>
+            </tr>
+           <tr>
+               <td><p class="text">ФИО руководителя</p></td>
+               <td><p class="text">{{ Companies.fio_head }}</p></td>
+            </tr>
+           <tr>
+               <td><p class="text">Телефон</p></td>
+               <td><p class="text">{{ Companies.telephone }}</p></td>
+            </tr>
+           <tr>
+               <td><p class="text">Почта</p></td>
+               <td><p class="text">{{ Companies.mail |truncatewords:2 |urlize}}</p></td>
+            </tr>
+           <tr>
+               <td><p class="text">Сайт</p></td>
+               <td>
+{#                   <a href={{ Companies.website}}>#}
+
+                           <p class="text">{{ Companies.website | truncatechars:25 |urlize}}</p>
+
+{#                   </a>#}
+               </td>
+            </tr>
+           <tr>
+               <td>
+                   <p class="text">Вид деятельности</p>
+               </td>
+               <td>
+                   <p class="text">{{ Companies.type_activity }}</p>
+               </td>
+            </tr>
+           <tr>
+               <td>
+                   <p class="text">Оборот компании</p>
+               </td>
+                <td>
+                    <p class="text">{{ Companies.revenue }}</p>
+                </td>
+            </tr><tr>
+                <td>
+                    <p class="text">Количество сотрудников</p>
+                </td>
+                <td>
+                    <p class="text">{{ Companies.number_employees }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="text">Дата регистрации компании</p>
+                </td>
+                <td>
+                    <p class="text">{{ Companies.date_registration }}</p>
+                </td>
+            </tr>
+           <tr>
+               <td>
+                   <p class="text">Кол-во объектов в собственности</p>
+               </td>
+                <td>
+                    <p class="text">{{ Companies.number_object_owned }}</p>
+                </td>
+            </tr>
+           <tr>
+                <td>
+                    <p class="text">Кол-во объектов в аренде</p>
+                </td>
+                <td>
+                    <p class="text">{{ Companies.number_object_rent }}</p>
+                </td>
+            </tr>
+           <tr>
+                <td>
+                    <p class="text">Кол-во ЗУ в собственности</p>
+                </td>
+                <td>
+                    <p class="text">{{ Companies.number_land_owned }}</p>
+                </td>
+            </tr>
+           <tr>
+               <td>
+                   <p class="text">Кол-во ЗУ в аренде</p>
+               </td>
+               <td>
+                   <p class="text">{{ Companies.number_land_rent }}</p>
+               </td>
+            </tr>
+           </tbody>
+       </table>
+
+{% endblock %}
+
+{% block right %}
+    <div class="about-inner__item history active" data-about="history">
+        <p  class="top-item"> {{name}} </p>
+{#                <div class="history-block content-block">#}
+{#                    <p class="history-box text content-box">Июль, 2023</p>#}
+{#                </div>#}
+    <div class="history-item content-item">
+    {% for i in history %}
+        <p class="history-date text content-date">{{ i.date }}</p>
+        <p  class="history-box text content-box">{{ i.description }}</p>
+    {% endfor %}
+   </div>
+    </div>
+{% endblock %}

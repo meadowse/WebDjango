@@ -1,89 +1,86 @@
 {% extends 'dbServer/pattern.html' %}
 {% block name %} {{ title }}{% endblock %}
 {% block body %}
-<div style="display: grid;  grid-template-columns: 50% 50%;">
-    <div style="display: grid; grid-template-rows: 20pt 80%; text-align: center;  border-right: black solid">
-        <div>
-            block1
-        </div>
-        <div>
-            <table class="infoTable" cellspacing="0" cellpadding="0">
+    <div style="display: grid;  grid-template-columns: 50% 50%;">
+        <div style="display: grid; grid-template-rows: 20pt 80%; text-align: center;  border-right: black solid">
+            <div>
+                block1
+            </div>
+            <div>
+                <table class="infoTable" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
-                        <th> <label for="check">
-                                <input id="checkAllMail" type="checkbox" onchange="checkAll(this)">
-                                <span></span>
-                            </label>
-                        </th>
+                        <th > <label for="check">
+                        <input id="checkAllMail" type="checkbox" onchange="checkAll(this)">
+                        <span></span>
+                    </label>
+                    </th >
 
-                        {% for j in head %}
-                        <th>{{ j }}</th>
-                        {% endfor %}
-                        <th>email</th>
+                            {% for j in head %}
+                                <th >{{ j }}</th>
+                            {% endfor %}
+                            <th>email</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for i in Companies %}
-                    <tr>
-                        <td>
-                            <label for="check">
-                                <input type="checkbox" value="{{  i.inn_company  }}, {{ type_mailing }}>
+                    <tbody>
+                        {% for i in Companies %}
+                        <tr>
+                            <td>
+                                <label for="check">
+                                    <input type="checkbox" value="{{  i.inn_company  }}, {{ type_mailing }}>
                                     <span></span>
                                 </label>
                             </td>
-{#                           <td ><input type=" checkbox" name="notInterest"
-                                    value="{{  i.inn_company  }}, {{ type_mailing }}" />
-                        </td>#}
-                        <td>{{ i.company_name}}</td>
-                        <td>{{ i.inn_company }}</td>
-                        <td>{{ i.legal_address }}</td>
-                        <td>{{ i.position_head }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div style="display: grid; grid-template-rows: 20pt 80%; text-align: center">
-        <div>
-            block2
-        </div>
-        <div>
-            <table class="infoTable" cellspacing="0" cellpadding="0">
-                <thead>
-                    <tr>
-                        <th><input id="option-all" name="checker" type="checkbox" onchange="checkAllForDel(this)"></th>
-                        {% for j in head %}
-                        <th>{{ j }}</th>
+{#                           <td ><input type="checkbox"  name="notInterest" value="{{  i.inn_company  }}, {{ type_mailing }}" /></td>#}
+                            <td >{{ i.company_name}}</td>
+                            <td >{{ i.inn_company }}</td>
+                            <td >{{ i.legal_address }}</td>
+                            <td >{{ i.position_head }}</td>
+                        </tr>
                         {% endfor %}
-                        <th>email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in Companies2 %}
-                    <tr>
-                        <td><input type="checkbox" name="interest" value="{{  i.inn_company  }}, {{ type_mailing }}" />
-                        </td> {# передаем инн и номер рассылки #}
-                        <td>{{ i.company_name}}</td>
-                        <td>{{ i.inn_company }}</td>
-                        <td>{{ i.legal_address }}</td>
-                        <td>{{ i.position_head }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="display: grid; grid-template-rows: 20pt 80%; text-align: center">
+            <div>
+                block2
+            </div>
+            <div>
+                <table class="infoTable" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th ><input id="option-all" name="checker" type="checkbox" onchange="checkAllForDel(this)"></th >
+                            {% for j in head %}
+                                <th >{{ j }}</th>
+                            {% endfor %}
+                            <th>email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in Companies2 %}
+                        <tr>
+                        <td ><input type="checkbox"  name="interest" value="{{  i.inn_company  }}, {{ type_mailing }}" /></td> {# передаем инн и номер рассылки   #}
+                            <td >{{ i.company_name}}</td>
+                            <td >{{ i.inn_company }}</td>
+                            <td >{{ i.legal_address }}</td>
+                            <td >{{ i.position_head }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-<div style="position: fixed;
+    <div style="position: fixed;
     top: 50%;
     left: 50%;
     z-index:99;">
     <div style="display: grid">
-        <button style="width: 100px; height: 50px;" onclick="buttonRemove()">Удалить </button>
+        <button style="width: 100px; height: 50px;"  onclick="buttonRemove()">Удалить </button>
         <br>
         <button style="width: 100px; height: 50px;" onclick="buttonAdd()">Добавить</button>
     </div>
-</div>
+    </div>
 
 {% endblock %}

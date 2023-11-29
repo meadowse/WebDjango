@@ -2,170 +2,57 @@
 {% block name %} {{ title }}{% endblock %}
 {% block body %}
 
-<div class="main-content content">
-    <div class="mail lists">
-        <div class="mail-wrap">
-            <div class="mailers-btns">
-                <button class="court-btn main-btn popup-btn" id="addLetter"> + Добавить почтовую рассылку</button>
-                <button class="court-btn main-btn" id="removeLetter" onclick="removeLine()"> - Удалить почтовую рассылку</button>
-            </div>
-            <div class="mail-table-main table" id="table">
-                <div class="lists-table__col">
-                    <div class="lists-table__box">
-                        <label for="check">
-                            <input class="checkAllInput" id="checkAll" type="checkbox">
-                            <span></span>
-                        </label>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <label for="check">
-                            <input type="checkbox" value="{{ i.id}},{{ i.template}},{{ i.contacts }}">
-                            <span></span>
-                        </label>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col lists-table__col-name">
-                    <div class="lists-table__box lists-table__box-name">
-                        <div class="toggle-col">
-                            <ul class="toggle-col__list">
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" disabled checked>
-                                        <span class="text">Наименование рассылки</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col2">
-                                        <span class="text">Шаблон</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col3">
-                                        <span class="text">Кол-во писем</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col4">
-                                        <span class="text">Дата создания</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col5">
-                                        <span class="text">Дата отправки</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col6">
-                                        <span class="text">Ответственный</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col7">
-                                        <span class="text">Статус</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col8">
-                                        <span class="text">Привязанные контакты</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                        <p class="text head-text">Наименование <br>рассылки</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text"><a href="{{i.id}}/">{{ i.mailing_list_name}}</a></p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col2">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Шаблон</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.template }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col3">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Кол-во писем</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.quantity }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col4">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Дата создания</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.date_creation }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col5">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Дата отправки</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.date_dispatch }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col6">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Ответственный</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.fio }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col7">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Статус</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.status}}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col8">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Привязанные контакты</p>
-                    </div>
-                    {% for i in mail %}
-                    <div class="lists-table__box">
-                        <p class="text">
-                            {% for j in i.contacts %}
-                                {% for f in j %}
-                                    <a> {{ f }}</a>,
-                                {% endfor %}
-                            {% endfor %}
-                        </p>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+<div class="courts court">
+        <div class="mailers-btns">
+            <button class="court-btn main-btn" id="letter" onclick="addInSender()">
+                добавить в рассылку
+            </button>
+            <button class="court-btn main-btn" id="sendBX">
+                Отправить в Битрикс24
+            </button>
         </div>
+         <table class="infoTable info_court" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th > <label for="check">
+                        <input id="checkAllMail" type="checkbox" onchange="checkAll(this)">
+                        <span></span>
+                    </label>
+                    </th >
+                    {% for j in names %}
+                        <th >{{ j }}</th>
+                    {% endfor %}
+                    <th>email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in Companies %}
+                <tr>
+                                   <td>
+                    <label for="check">
+                        <input type="checkbox" value="{{ i.id}},{{ i.template}},{{ i.contacts }}">
+                        <span></span>
+                    </label>
+                </td>
+                   <td >{{ i.id}}</td>
+                    <td >{{ i.template }}</td>
+                    <td >{{ i.quantity }}</td>
+                    <td >{{ i.date_creation }}</td>
+                    <td >{{ i.date_dispatch }}</td>
+                    <td >{{ i.fio }}</td>
+                    <td >{{ i.status}}</td>
+                    {% for j in i.contacts %}
+                        <td >
+                            {% for f in j %}
+{#                                вот тут поправить #}
+                                {{ f }}<br>
+                            {% endfor %}
+                        </td>
+                        {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</div>
+
 {% endblock %}

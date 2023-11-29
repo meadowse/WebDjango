@@ -20,18 +20,15 @@ from .views import * # смотрим по разным классам в
 
 
 urlpatterns = [
-    path('', index, name='home'),
+    path('list/', index, name='home'),
     # path('table/', table, name='table'),
-    path('<int:catid>/', info, name='info'),
-    path('sms/', smsmainCourt, name='smsmainCourt'),
-    path('sms/<str:catid>/', smsinfo, name='smsinfo'),
-    path('court/', mainCourt, name='mainCourt'),
-    path('court/<str:catid>/', courtinfo, name='courtinfo'),
-    path('infoAboutObj/', infoAboutObj, name='infoAboutObj'),
+    path('info/', info, name='info'),
+    path('infoAboutObj/',infoAboutObj, name='infoAboutObj'),
+
+
     path('login', MainView.as_view(), name='login'),
-    path('logout/', logout_user, name='logout'),
-    path('extract/', extract, name='extract'),
-    path('objects/', objectShow, name='objects'),
-    path('objects/<int:catid>/', objectInfio, name='objectsInfo'),
+    path('logout/', logout_user, name='logout')
 ]
+
+
 

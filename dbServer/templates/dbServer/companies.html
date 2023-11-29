@@ -1,311 +1,95 @@
+<<<<<<< HEAD
 {% extends 'dbServer/pattern.html' %}
+
+{% block name %} {{ title }}{% endblock %}
 {% block body %}
-{% load static %}
-<div class="main-content content filter-company">
-    <div class="lists" id="tableCompany">
-        <div class="table-box">
-            <div class="lists-table table">
-                <div class="lists-table__col lists-table__col-name" data-val="company_name">
-                    <div class="lists-table__box lists-table__box-name">
-                        <div class="toggle-col">
-                            <ul class="toggle-col__list">
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" disabled checked>
-                                        <span class="text">Наименование компании</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col1">
-                                        <span class="text">ИНН</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col2">
-                                        <span class="text">Юр. адрес</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col3">
-                                        <span class="text">Должность руководителя</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col4">
-                                        <span class="text">ФИО руководителя</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col5">
-                                        <span class="text">Телефоны</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col6">
-                                        <span class="text">Почты</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col7">
-                                        <span class="text">Сайт</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col8">
-                                        <span class="text">Источники данных</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col9">
-                                        <span class="text">ОКВЭД</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col10">
-                                        <span class="text">Выручка</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col11">
-                                        <span class="text">Рассылка по электронной почте</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col12">
-                                        <span class="text">Рассылка по почте</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col13">
-                                        <span class="text">Рассылка по смс</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col14">
-                                        <span class="text">Звонки</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                        <p class="text head-text">Наименование компании</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">
-                            <a class="text lists-name" href="{{i.inn_company}}/">
-                                {{ i.company_name }}</a>
-                        </p>
-                    </div>
+
+    {% if Companies %}
+        <div class="lists">
+        <table class="lists-table" id="table">
+
+                <tr>
+
+                    {% for j in names  %}
+                        <th><p class="text head-text" onClick="document.location = '?sorted={{ j }}'">{{ j }}</p></th>
                     {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="inn_company" data-col="col1">
-                    <div class="lists-table__box">
-                        <p class="text head-text">ИНН</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.inn_company }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="legal_address" data-col="col2">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Юр. адрес</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.legal_address }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="position_head" data-col="col3">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Должность руководителя</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.position_head }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="fio_head" data-col="col4">
-                    <div class="lists-table__box">
-                        <p class="text head-text">ФИО руководителя</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.fio_head }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="telephone" data-col="col5">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Телефоны</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text text-flex">
-                            {% for f in i.telephone %}
-                            <a href="tel:{{ f }}">{{ f }}</a>
-                            {% endfor%}
-                        </p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="mail" data-col="col6">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Почты</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text text-flex">
-                            {% for f in i.mail %}
-                            <a href="mailto:{{ f }}">{{ f }}</a>
-                            {% endfor %}
-                        </p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="website" data-col="col7">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Сайт</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">
-                            <a target="_blank"> {{ i.website | urlize }}</a>
-                        </p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="data_source" data-col="col8">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Источники данных</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <div class="text-flex">
-                            {% for f in i.data_source %}
-                            <p class="text">{{ f }}</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="type_activity" data-col="col9">
-                    <div class="lists-table__box">
-                        <p class="text head-text">ОКВЭД</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.type_activity }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="revenue" data-col="col10">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Выручка</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text revenue-value">{{ i.revenue }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="email_newsletter" data-col="col11">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Рассылка по электронной почте</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <div class="text-flex">
-                            {% for f in i.email_newsletter %}
-                            <p class="text">{{f}}</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="mail_newsletter" data-col="col12">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Рассылка по почте</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <div class="text-flex">
-                            {% for f in i.mail_newsletter %}
-                            <p class="text">{{f}}</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="sms_mailing" data-col="col13">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Рассылка по смс</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <div class="text-flex">
-                            {% for f in i.sms_mailing %}
-                            <p class="text">{{f}}</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-val="the_bell" data-col="col14">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Звонки</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <div class="text-flex">
-                            {% for f in i.the_bell %}
-                            <p class="text">{{f}}</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        <div class="table-more more">
-            <div class="more-navigation__wrap">
-                <div class="more-arrow prev arrow find">
-                    <img src="{% static 'dbServer/images/arr-left.png' %}" alt="" />
-                </div>
-                <div class="more-navigation__nums"></div>
-                <div class="more-arrow next arrow find">
-                    <img src="{% static 'dbServer/images/arr-right.png' %}" alt="" />
-                </div>
-            </div>
-            <div class="more-box">
-                <div class="counter counter-1">{{ count }}</div>
-                <div class="limit-sort drop">
-                    <div class="text">Показать:</div><span data-result="50">50</span>
-                    <div class="drop__list">
-                        <div class="drop__item find" data-drop="50">50</div>
-                        <div class="drop__item find" data-drop="100">100</div>
-                        <div class="drop__item find" data-drop="200">200</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                </tr>
+
+
+                {% for i in Companies %}
+                    <tr>
+{#                    {% for val in i %}#}
+                        <td >
+                            <p class="text"><a class="text lists-name" href="{{i.inn_company}}/">{{ i.company_name |truncatewords:4}}</a></p></td>
+                        <td ><p  class="text">{{ i.inn_company }}</p></td>
+                        <td ><p  class="text">{{ i.legal_address }}</p></td>
+                        <td ><p  class="text">{{ i.position_head }}</p></td>
+                        <td ><p  class="text">{{ i.fio_head }}</p></td>
+                        <td ><p  class="text">{{ i.telephone|truncatewords:1 }}</p></td>
+                        <td ><p class="text"><a class="text lists-name">{{ i.mail |truncatewords:2 |urlize}}</a></p></td>
+                        <td ><p class="text"><a class="text lists-name" href={{ i.website}} target="_blank">{{ i.website | truncatechars:25}}</a></p></td>
+                        <td ><p  class="text">{{ i.data_source }}</p></td>
+                        <td ><p  class="text">{{ i.activity_type_code }}</p></td>
+                        <td ><p  class="text">{{ i.revenue }}</p></td>
+                        <td ><p  class="text">{{ i.email_newsletter }}</p></td>
+                        <td ><p  class="text">{{ i.mail_newsletter }}</p></td>
+                        <td ><p  class="text">{{ i.sms_mailing }}</p></td>
+                        <td ><p  class="text">{{ i.the_bell }}</p></td>
+
+{#                        {% endfor %}#}
+                    </tr>
+                {% endfor %}
+        </table>
+
+        {% else %} нет записей
+    {% endif %}
 </div>
+=======
+{% extends 'dbServer/pattern.html' %}
+
+{% block name %} {{ title }}{% endblock %}
+{% block body %}
+
+    {% if Companies %}
+        <div class="lists">
+        <table class="lists-table">
+
+                <tr>
+
+                    {% for j in names  %}
+                        <th><p class="text head-text" onClick="document.location = '?sorted={{ j }}'">{{ j }}</p></th>
+                    {% endfor %}
+                </tr>
+
+
+                {% for i in Companies %}
+                    <tr>
+{#                    {% for val in i %}#}
+                        <td>
+                            <p class="text"><a class="text lists-name" href="{{i.inn_company}}/">{{ i.company_name}}</a></p></td>
+                        <td><p  class="text">{{ i.inn_company }}</p></td>
+                        <td><p  class="text">{{ i.legal_address }}</p></td>
+                        <td><p  class="text">{{ i.position_head }}</p></td>
+                        <td><p  class="text">{{ i.fio_head }}</p></td>
+                        <td><p  class="text">{{ i.telephone|truncatewords:1 }}</p></td>
+                        <td><p class="text"><a class="text lists-name">{{ i.mail |truncatewords:2 |urlize}}</a></p></td>
+                        <td><p class="text"><a class="text lists-name" href={{ i.website}} target="_blank">{{ i.website | truncatechars:25}}</a></p></td>
+                        <td><p  class="text">{{ i.data_source }}</p></td>
+                        <td><p  class="text">{{ i.activity_type_code }}</p></td>
+                        <td><p  class="text">{{ i.revenue }}</p></td>
+                        <td><p  class="text">{{ i.email_newsletter }}</p></td>
+                        <td><p  class="text">{{ i.mail_newsletter }}</p></td>
+                        <td><p  class="text">{{ i.sms_mailing }}</p></td>
+                        <td><p  class="text">{{ i.the_bell }}</p></td>
+
+{#                        {% endfor %}#}
+                    </tr>
+                {% endfor %}
+        </table>
+
+        {% else %} нет записей
+    {% endif %}
+</div>
+    <script src="dbServer/js/script.js"></script>
+>>>>>>> main
 {% endblock %}

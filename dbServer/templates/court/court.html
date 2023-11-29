@@ -1,10 +1,9 @@
 {% extends 'dbServer/pattern.html' %}
-
+{% block name %} {{ title }}{% endblock %}
 {% block body %}
 
 
-<div class="main-content content">
-    <div class="courts court mail-wrap">
+    <div class="courts court">
         <div class="mailers-btns">
             <button class="court-btn main-btn" id="letter">
                 Создать письмо
@@ -12,184 +11,52 @@
             <button class="court-btn main-btn" id="sendBX" onclick="addInSender()">
                 добавить в рассылку
             </button>
-            {# <button>#}
-                {# Отправить в Битрикс24#}
-                {# </button>#}
+{#            <button>#}
+{#                Отправить в Битрикс24#}
+{#            </button>#}
         </div>
-            <div class="court-table-main table" id="table">
-                <div class="lists-table__col">
-                    <div class="lists-table__box">
+        <div class="court-wrap">
+            <table class="court-table-main">
+
+                <tr>
+                    <th >
                         <label for="check">
-                            <input class="checkAllInput" id="checkAll" type="checkbox">
-                            <span></span>
-                        </label>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
+                        <input id="checkAllCourt" type="checkbox" onchange="checkAll(this)">
+                        <span></span>
+                    </label>
+                    </th >
+                    {% for j in names %}
+                        <th ><p class="text">{{ j }}</p></th>
+                    {% endfor %}
+                        <th><p class="text">email</p></th>
+                </tr>
+
+
+                {% for i in Companies %}
+                    <tr>
+                        <td >
                         <label for="check">
-                            <input type="checkbox" value="{{ i.id}},{{ i.template}},{{ i.contacts }}">
-                            <span></span>
-                        </label>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col lists-table__col-name">
-                    <div class="lists-table__box lists-table__box-name">
-                        <div class="toggle-col">
-                           <ul class="toggle-col__list">
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" disabled checked>
-                                    <span class="text">Адрес объекта</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col1">
-                                    <span class="text">Округ</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col2">
-                                    <span class="text">Назначение объекта</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col3">
-                                    <span class="text">Кадастровый номер</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col4">
-                                    <span class="text">Площадб объекта, м2</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col5">
-                                    <span class="text">Этажность</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col6">
-                                    <span class="text">Вид объекта</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col7">
-                                    <span class="text">Вид собственности</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col8">
-                                    <span class="text">Собственник/арендатор</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col9">
-                                    <span class="text">Выписка</span>
-                                </label>
-                            </li>
-                        </ul>
-                        </div>
-                        <p class="text head-text">Номер дела</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">
-                            <a class="court-name" href="./court_info.html">{{ i.id}}</a>
-                        </p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col2">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Номер письма</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.template }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col3">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Истец</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.quantity }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col4">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Ответчик</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.date_creation }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col5">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Судья</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.date_dispatch }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col6">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Статус дела</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.fio }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col7">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Ответственный</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.fio }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col8">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Статус</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.status}}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="lists-table__col" data-col="col9">
-                    <div class="lists-table__box">
-                        <p class="text head-text">Ссылка на дело</p>
-                    </div>
-                    {% for i in Companies %}
-                    <div class="lists-table__box">
-                        <p class="text">{{ i.status}}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+                        <input id="checkAllMail" type="checkbox" value="{{ i.id}},{{ i.template}},{{ i.contacts }}">
+                        <span></span>
+                        </td>
+                        <td > <p class="text">{{ i.id}}</p></td>
+                        <td ><p class="text">{{ i.template }}</p></td>
+                        <td ><p class="text">{{ i.quantity }}</p></td>
+                        <td ><p class="text">{{ i.date_creation }}</p></td>
+                        <td ><p class="text">{{ i.date_dispatch }}</p></td>
+                        <td ><p class="text">{{ i.fio }}</p></td>
+                        <td ><p class="text">{{ i.status}}</p></td>
+                        {% for j in i.contacts %}
+                            <td >
+                                {% for f in j %}
+    {#                                вот тут поправить #}
+                                    <p class="text">{{ f }}</p><br>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 {% endblock %}

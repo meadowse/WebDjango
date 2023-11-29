@@ -1,0 +1,71 @@
+{% extends 'dbServer/companiesInfo.html' %}
+{% block table %}
+
+        <div class="about-obj__box">
+            <p class="text fw-600">Объект в собственности</p>
+        </div>
+        {% for i in obj %}
+            <div class="about-obj__box">
+                <p class="text" onclick="objectsInfo({{ i.id_cadastral_number }} , {{ Companies.id }})"><a>{{ i.objects_owned }}</a></p>
+            </div>
+        {% endfor %}
+        <div class="about-obj__box">
+            <p class="text fw-600">Объект в аренде</p>
+        </div>
+
+        {% for i in ObjInArend %}
+            <div class="about-obj__box">
+                <p class="text" onclick="objectsInfo({{ i.id_cadastral_number }} , {{ Companies.id }})"><a>{{ i.objects_owned }}</a></p>
+            </div>
+        {% endfor %}
+
+        <div class="about-obj__box">
+                <p class="text fw-600">Земельный участок в собственности</p>
+        </div>
+
+        {% for i in earthSobstv %}
+
+            <div class="about-obj__box">
+                <p class="text" onclick="objectsInfo({{ i.id_cadastral_number }} , {{ Companies.id }})"><a>{{ i.objects_owned }}</a></p>
+            </div>
+        {% endfor %}
+
+        <div class="about-obj__box">
+                <p class="text fw-600">Земельный участок в аренде</p>
+        </div>
+
+        {% for i in earthInArend %}
+            <div class="about-obj__box">
+                <p class="text" onclick="objectsInfo({{ i.id_cadastral_number }} , {{ Companies.id }})"><a>{{ i.objects_owned }}</a></p>
+            </div>
+        {% endfor %}
+
+{% endblock %}
+
+{% block right %}
+
+
+    <div class="about-inner__item about-obj" data-about="obj">
+        <p class="top-item about-top__obj">
+            {{name}}
+        </p>
+    </div>
+    <div class="about-wrapper">
+
+        <br>
+            <p  class="about__item text">Кадастровый номер <span id="CadastrNum"></span></p>
+{#            <p>{% obj_info[]cadastr %}</p>#}
+
+            <p class="about__item text">Вид объекта <span id="ObjView"></span></p>
+
+            <p class="about__item text">Вид права <span id="TypeRight"></span></p>
+
+            <p class="about__item text">№ регистрации права <span id="NumRight"></span></p>
+
+            <p class="about__item text">Название правообладателя <span id="FIO"></span></p>
+
+            <p class="about__item text">Ссылка на выписку <span id="NameHolder"></span></p>
+
+
+    </div>
+{% endblock %}

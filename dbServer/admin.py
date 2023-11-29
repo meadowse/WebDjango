@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 # для связи с админ панелью
 # Register your models here.
@@ -9,3 +10,4 @@ from django.contrib import admin
 #     list_per_page = 8
 #
 # admin.site.register(Companies, EmployeeAdmin)  # информируем что есть такая таблица
+
