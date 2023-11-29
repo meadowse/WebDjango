@@ -1,4 +1,3 @@
-# для хранения представлений и контроллеров приложения
 """
 WSGI config for myproject project.
 

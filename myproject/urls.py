@@ -16,18 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from dbServer.views import *
-from CalsPage.views import *
-from EmailCount.views import *
-
 
 # смотрим переходы по разным url 
 urlpatterns = [
     path('admin/', admin.site.urls), # отслеживаем переход на страницу администратора
-    path('json/', include('dbServer.urls')), # отправляем в приложение dbServer и теперь там будет отображение всего
-    path('json/court/', include('CalsPage.urls')),
-    path('json/mailing/',include('EmailCount.urls')),
-
+    path('', include('dbServer.urls')) # отправляем в приложение dbServer и теперь там будет отображение всего 
 ]
-
-handler404 = pageNotFound

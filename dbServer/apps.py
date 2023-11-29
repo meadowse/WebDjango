@@ -1,4 +1,3 @@
-# для настройки и конфигурирования проекта
 from django.apps import AppConfig
 
 

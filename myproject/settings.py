@@ -11,11 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
-import psycopg2
-from .key import secretKey
-# import dj_database_url
-from sshtunnel import SSHTunnelForwarder
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,30 +21,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # secret key - секретный ключ, используемый для подписи куки, токенов и других объектов,
 # используемых для безопасности приложения.
-SECRET_KEY = secretKey
+SECRET_KEY = 'django-insecure-28o0q)h%1$vt!m6pfcl68z0!jtfgss^vu0_(^bv+*w*(osa$z1'
 
 # debug - определяет, будет ли включен режим отладки.
 # Не следует использовать этот режим в продакшн-сервере.
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'rasilka.ru', 'rasilka.online', '0.0.0.0']
-
+ALLOWED_HOSTS = []
 
 
 # installed apps - список приложений, которые используются в проекте.
 # регистрируем новые приложения
 INSTALLED_APPS = [
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dbServer.apps.DbserverConfig', # можно оставить просто dbServer но так как написано сейчас потом упростит жизньм
-    'CalsPage',
-    'EmailCount',
-
+    'dbServer'
 ]
 
 MIDDLEWARE = [
@@ -81,25 +71,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
-# Connect to a server using the ssh keys. See the sshtunnel documentation for using password authentication
-ssh_tunnel = SSHTunnelForwarder(
-        ('192.168.0.62', 22),
-        ssh_pkey="~/.ssh/id_rsa",
-        ssh_username="meadowse",
-        remote_bind_address=('localhost', 5432),)
-ssh_tunnel.start()
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # поменять бд с которыми работаем 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'meadowse',
-        'USER': 'meadowse',
-        'PASSWORD': 'Comebackplz56!!',
-        'HOST': 'localhost',
-        'PORT': ssh_tunnel.local_bind_port,
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -140,13 +120,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = 'media/'

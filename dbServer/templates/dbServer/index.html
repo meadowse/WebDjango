@@ -1,47 +1,25 @@
-{% extends 'dbServer/clons.html' %}
-{% block title %} main Paige{% endblock %}
-    {% block Search %}
-            <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-    {% endblock %}
-{% block body %}
-
-
-    {% if infoAbLE %}
-{#  поисковик #}
-                  <table  class="table"><p>
-            <thead>
-    <tr>
-        <a href="?order_by=name">{% for j in tibleHead %}
-             <th>{{ j }}</th></a>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet", href="grid.css">
+  </head>
+  <body>
+    <main>
+      <div class="container">
+    
+        <h1>Bootstrap grid examples</h1>
+        <p class="lead">Basic grid layouts to get you familiar with building within the Bootstrap grid system.</p>
+        <p>In these examples the <code>.themed-grid-col</code> class is added to the columns to add some theming. This is not a class that is available in Bootstrap by default.</p>
+    
+        <h2 class="mt-4">Five grid tiers</h2>
+        <p>There are five tiers to the Bootstrap grid system, one for each range of devices we support. Each tier starts at a minimum viewport size and automatically applies to the larger devices unless overridden.</p>
+        {% for el in Samostroy %}
+          <div class ="alert alert-warnning mt-2">
+            <h3>{{el.names}}</h3>
+            <p>{{el.status}}</p>
         {% endfor %}
-    </tr>
-  </thead>
-                  <tbody>
-           {% for el in infoAbLE %}
-                <tr>
-                    <td>{{el.ITN}}</td>
-                    <td>{{el.name}}</td>
-                    <td>{{el.legalAddres}}</td>
-                    <td>{{ el.positionOfHead}}</td>
-                    <td>{{el.NameOfHead}}</td>
-                    <td>{{el.ITNofHead}}</td>
-                    <td>{{el.PfoneNumbers  | truncatewords:2 }}</td>
-                    <td>{{el.Post | truncatechars:10 }}</td>
-                    <td><a href="{{el.Site}}">{{el.Site | truncatechars:10 }}</a></td>
-                    <td>{{el.DateTocreate}}</td>
-{#                {% for colum in colums %}#}
-{#                    <td>#}
-{#                        {% getattr(el, colum) %}#}
-{#                    </td>#}
-{#                {% endfor %}#}
-                </tr>
-          {% endfor %}
-                  </table>
-    {% else %}
-          <p>нет записей</p>
-    {%  endif %}
-
-{% endblock %}
+    </main>
+  </body>
+</html>

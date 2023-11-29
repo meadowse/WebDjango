@@ -15,20 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import * # смотрим по разным классам в
-# смотрим переходы по разным url
-
-
+from . import views
+# смотрим переходы по разным url 
 urlpatterns = [
-    path('list/', index, name='home'),
-    # path('table/', table, name='table'),
-    path('info/', info, name='info'),
-    path('infoAboutObj/',infoAboutObj, name='infoAboutObj'),
-
-
-    path('login', MainView.as_view(), name='login'),
-    path('logout/', logout_user, name='logout')
+    path('', views.index)
 ]
-
-
-
