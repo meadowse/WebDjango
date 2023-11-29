@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header-wrap">
+            <a class="header-logo__link" href="/">
+                <img class="header-logo__icon" src="../../static/img/logo.png" alt="logo">
+            </a>
+            <form class="header-form form" action="" mediv class="lists-table__box" od="get">
+                <input class="header-input input" type="text" placeholder="Поиск и фильтр">
+                <button class="header-btn form-btn" type="submit"></button>
+            </form>
+        </div>
+    </header>
+    <main class="main">
+        <div class="sidebar">
+            <nav>
+                <ul class="sidebar-menu menu">
+                    <li class="menu-li">
+                        <a class="menu-link" href="#">
+                            <img src="../../static/img/monitor.png" alt="">Рабочий стол</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link active" href="../dbServer/companies.html">
+                            <img src="../../static/img/burger.png" alt="">Списки</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../dbServer/objects.html">
+                            <img src="../../static/img/object.png" alt="">Объекты</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../court/courts.html">
+                            <img src="../../static/img/court.png" alt="">Суд</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../mailers/email.html">
+                            <img src="../../static/img/email.png" alt="">Email</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../mailers/mail.html">
+                            <img src="../../static/img/post.png" alt="">Почта</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../mailers/sms.html">
+                            <img src="../../static/img/sms.png" alt="">СМС</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../mailers/calls.html">
+                            <img src="../../static/img/phone.png" alt="">Звонки</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../dbServer/analitycs.html">
+                            <img src="../../static/img/analytics.png" alt="">Аналитика</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../dbServer/economy.html">
+                            <img src="../../static/img/economycs.png" alt="">Экономика</a>
+                    </li>
+                    <li class="menu-li">
+                        <a class="menu-link" href="../dbServer/settings.html">
+                            <img src="../../static/img/settings.png" alt="">Настройки</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content content">
+            <div class="lists">
+                <div class="lists-table table" id="table">
+                    <div class="lists-table__col">
+                        <div class="lists-table__box lists-table__box-name">
+                            <div class="filter-col">
+                                <ul class="filter-col__list">
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" disabled checked>
+                                            <span class="text">Наименование компании</span>
+                                        </label>
+                                    </li>
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" checked id="col2">
+                                            <span class="text">ИНН</span>
+                                        </label>
+                                    </li>
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" checked id="col3">
+                                            <span class="text">Юр адрес</span>
+                                        </label>
+                                    </li>
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" checked id="col4">
+                                            <span class="text">Должность руковолителя</span>
+                                        </label>
+                                    </li>
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" checked id="col5">
+                                            <span class="text">ФИО руководителя</span>
+                                        </label>
+                                    </li>
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" checked id="col6">
+                                            <span class="text">Телефон</span>
+                                        </label>
+                                    </li>
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" checked id="col7">
+                                            <span class="text">Почта</span>
+                                        </label>
+                                    </li>
+                                    <li class="filter-col__li">
+                                        <label>
+                                            <input type="checkbox" checked id="col8">
+                                            <span class="text">Сайт</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <p class="text head-text">Наименование компании</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">
+                                <a class="text lists-name" href="../dbServer/company_info.html">ООО “МАДЕЛОН”</a>
+                            </p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                    <div class="lists-table__col" data-col="col2">
+                        <div class="lists-table__box">
+                            <p class="text head-text">ИНН</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">7703345160</p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                    <div class="lists-table__col" data-col="col3">
+                        <div class="lists-table__box">
+                            <p class="text head-text">Юр адрес</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">107113, г. Москва,
+                                ул. Сокольнический Вал, д. 8</p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                    <div class="lists-table__col" data-col="col4">
+                        <div class="lists-table__box">
+                            <p class="text head-text">Должность руководителя</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">Генеральный директор</p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                    <div class="lists-table__col" data-col="col5">
+                        <div class="lists-table__box">
+                            <p class="text head-text">ФИО руководителя</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">Степанов Виталий Александрович</p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                    <div class="lists-table__col" data-col="col6">
+                        <div class="lists-table__box">
+                            <p class="text head-text">Телефон</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">
+                                <a href="tel:74956033007">+74956033007</a><br>
+                                <a href="tel:74956033006">+74956033006</a>
+                            </p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                    <div class="lists-table__col" data-col="col7">
+                        <div class="lists-table__box">
+                            <p class="text head-text">Почта</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">
+                                <a href="mailto:info@madelon.ru">info@madelon.ru</a>
+                            </p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                    <div class="lists-table__col" data-col="col8">
+                        <div class="lists-table__box">
+                            <p class="text head-text">Сайт</p>
+                        </div>
+                        <div class="lists-table__box">
+                            <p class="text">
+                                <a href="//madelon.ru">http://madelon.ru</a>
+                            </p>
+                        </div>
+                        <div class="resizer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../../static/col-resize.min.js"></script>
+    <script src="../../static/script.js"></script>
+</body>
+
+</html>

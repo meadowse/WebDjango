@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>404 Error Page</title>
+    <link type="text/css" , href="{% static "dbServer/../../../html/../../static/dbServer/css/styles.css" %}" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta https-equiv="X-UA-Compatible" content="ie=edge" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+  <div class="container">
+    <div class="grid-row">
+      <div class="colmun colmun-left">
+        <img src="https://blog.stackfindover.com/wp-content/uploads/2021/03/image-left.png" alt="image-left">
+        <h1 class="px-spc-b-20">We can't find the page you are looking for.</h1>
+        <span class="px-spc-b-20">This page has been relocated or removed.</span>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href={% url 'home' %}> main Page </a>
+      </div>
+      <div class="colmun colmun-right">
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
