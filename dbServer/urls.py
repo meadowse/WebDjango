@@ -16,22 +16,10 @@ Including another URLconf
 """
 from django.urls import path
 from .views import * # смотрим по разным классам в
-# смотрим переходы по разным url
-
-
+# смотрим переходы по разным url 
 urlpatterns = [
     path('', index, name='home'),
-    # path('table/', table, name='table'),
-    path('<int:catid>/', info, name='info'),
-    path('sms/', smsmainCourt, name='smsmainCourt'),
-    path('sms/<str:catid>/', smsinfo, name='smsinfo'),
-    path('court/', mainCourt, name='mainCourt'),
-    path('court/<str:catid>/', courtinfo, name='courtinfo'),
-    path('infoAboutObj/', infoAboutObj, name='infoAboutObj'),
-    path('login', MainView.as_view(), name='login'),
-    path('logout/', logout_user, name='logout'),
-    path('extract/', extract, name='extract'),
-    path('objects/', objectShow, name='objects'),
-    path('objects/<int:catid>/', objectInfio, name='objectsInfo'),
+    path('table/', table, name='table')
 ]
+
 

@@ -1,0 +1,47 @@
+{% extends 'dbServer/clons.html' %}
+{% block title %} main Paige{% endblock %}
+    {% block Search %}
+            <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    {% endblock %}
+{% block body %}
+
+
+    {% if infoAbLE %}
+{#  поисковик #}
+                  <table  class="table"><p>
+            <thead>
+    <tr>
+        <a href="?order_by=name">{% for j in tibleHead %}
+             <th>{{ j }}</th></a>
+        {% endfor %}
+    </tr>
+  </thead>
+                  <tbody>
+           {% for el in infoAbLE %}
+                <tr>
+                    <td>{{el.ITN}}</td>
+                    <td>{{el.name}}</td>
+                    <td>{{el.legalAddres}}</td>
+                    <td>{{ el.positionOfHead}}</td>
+                    <td>{{el.NameOfHead}}</td>
+                    <td>{{el.ITNofHead}}</td>
+                    <td>{{el.PfoneNumbers  | truncatewords:2 }}</td>
+                    <td>{{el.Post | truncatechars:10 }}</td>
+                    <td><a href="{{el.Site}}">{{el.Site | truncatechars:10 }}</a></td>
+                    <td>{{el.DateTocreate}}</td>
+{#                {% for colum in colums %}#}
+{#                    <td>#}
+{#                        {% getattr(el, colum) %}#}
+{#                    </td>#}
+{#                {% endfor %}#}
+                </tr>
+          {% endfor %}
+                  </table>
+    {% else %}
+          <p>нет записей</p>
+    {%  endif %}
+
+{% endblock %}

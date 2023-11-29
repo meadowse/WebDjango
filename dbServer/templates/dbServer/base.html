@@ -1,0 +1,22 @@
+{% extends 'dbServer/clons.html' %}
+{% block title %} Change table{% endblock %}
+{% block body %}
+    таблица Сведенья о собственниках ЮЛ
+    <form method="post">
+    <span> {{  error }}</span>
+    {% csrf_token %}
+        {{ form.ITN }}
+        {{ form.name }}
+        {{ form.legalAddres }}
+        {{ form.positionOfHead }}
+        {{ form.NameOfHead }}
+        {{ form.ITNofHead }}
+        {{ form.PfoneNumbers }}
+        {{ form.Post }}
+        {{ form.Site }}
+{#        <input type="text" placeholder=" введите номер" class="form-control"><br>#}
+{#        <textarea placeholder="введите адрес" class="form-control"></textarea><br>#}
+        <button type="submit" class="btn btn-success">Add</button>
+
+    </form>
+{% endblock %}

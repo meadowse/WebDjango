@@ -17,19 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from dbServer.views import *
-from CalsPage.views import *
-from EmailPage.views import *
-from EmailCount.views import *
 
 # смотрим переходы по разным url 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # отслеживаем переход на страницу администратора
-    path('', include('dbServer.urls')),  # отправляем в приложение dbServer и теперь там будет отображение всего
-    # path('court/', include('courtTable.urls')),
-    path('cals/', include('CalsPage.urls')),
-    path('email/', include('EmailPage.urls')),
-    path('emailCount/', include('EmailCount.urls')),
-    # path('sms/', include('SMSPage.urls'))
+    path('admin/', admin.site.urls), # отслеживаем переход на страницу администратора
+    path('', include('dbServer.urls')) # отправляем в приложение dbServer и теперь там будет отображение всего
 ]
+
 
 handler404 = pageNotFound
