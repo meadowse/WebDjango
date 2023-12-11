@@ -31,7 +31,22 @@ except KeyError as e:
 # Не следует использовать этот режим в продакшн-сервере.
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'rasilka.ru', 'rasilka.online', '82.148.30.81']
+try:
+    DOMEN_NAME = os.environ["DOMEN_NAME"]
+except KeyError as e:
+    raise RuntimeError("Could not find a DOMEN_NAME in environment") from e
+
+try:
+    DOMEN_NAME2 = os.environ["DOMEN_NAME2"]
+except KeyError as e:
+    raise RuntimeError("Could not find a DOMEN_NAME2 in environment") from e
+
+try:
+    IP = os.environ["IP"]
+except KeyError as e:
+    raise RuntimeError("Could not find a IP in environment") from e
+
+ALLOWED_HOSTS = ['127.0.0.1', DOMEN_NAME, DOMEN_NAME2, IP]
 
 # Installed apps - список приложений, которые используются в проекте.
 # Регистрируем новые приложения
@@ -151,14 +166,24 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+try:
+    FULL_DOMEN_NAME = os.environ["FULL_DOMEN_NAME"]
+except KeyError as e:
+    raise RuntimeError("Could not find a FULL_DOMEN_NAME in environment") from e
+
+try:
+    FULL_DOMEN_NAME2 = os.environ["FULL_DOMEN_NAME2"]
+except KeyError as e:
+    raise RuntimeError("Could not find a FULL_DOMEN_NAME2 in environment") from e
+
 # CORS SETTINGS
 CORS_ALLOW_ALL_ORIGINS = False  # Разрешить все источники или нет
 CORS_ALLOWED_ORIGINS = [
-    "https://rasilka.ru",       # Добавьте разрешенные источники
-    "https://rasilka.online",  # Другие разрешенные источники
+    FULL_DOMEN_NAME,       # Добавьте разрешенные источники
+    FULL_DOMEN_NAME2,  # Другие разрешенные источники
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://rasilka.ru', 'https://rasilka.online', ]
+CSRF_TRUSTED_ORIGINS = [FULL_DOMEN_NAME, FULL_DOMEN_NAME2, ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = 'media/'
