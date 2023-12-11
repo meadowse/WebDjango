@@ -82,15 +82,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
+try:
+    PASSWORD = os.environ["PASSWORD"]
+except KeyError as e:
+    raise RuntimeError("Could not find a PASSWORD in environment") from e
+
+try:
+    NAME = os.environ["NAME"]
+except KeyError as e:
+    raise RuntimeError("Could not find a NAME in environment") from e
+
+try:
+    USER = os.environ["USER"]
+except KeyError as e:
+    raise RuntimeError("Could not find a USER in environment") from e
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # поменять бд с которыми работаем 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'meadowse',
-        'USER': 'meadowse',
-        'PASSWORD': 'Comebackplz56!!',
+        'NAME': NAME,
+        'USER': USER,
+        'PASSWORD': PASSWORD,
         'HOST': 'localhost',
     },
 }
