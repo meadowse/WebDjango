@@ -1,10 +1,14 @@
 import psycopg2
 
+try:
+    PASSWORD = os.environ["PASSWORD"]
+except KeyError as e:
+    raise RuntimeError("Could not find a PASSWORD in environment") from e
 
 def db():
     return psycopg2.connect(user="meadowse",
                             # пароль, который указали при установке PostgreSQL
-                            password="Comebackplz56!!",
+                            password=PASSWORD,
                             host="localhost",
                             database="meadowse")
 
