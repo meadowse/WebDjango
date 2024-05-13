@@ -21,11 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # secret key - секретный ключ, используемый для подписи куки, токенов и других объектов,
 # используемых для безопасности приложения.
-SECRET_KEY = 'django-insecure-28o0q)h%1$vt!m6pfcl68z0!jtfgss^vu0_(^bv+*w*(osa$z1'
 
 # debug - определяет, будет ли включен режим отладки.
 # Не следует использовать этот режим в продакшн-сервере.
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
