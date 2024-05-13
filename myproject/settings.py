@@ -19,7 +19,6 @@ from sshtunnel import SSHTunnelForwarder
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'cbaa45b7774dc2433dcad6c037665c57f2db4fd113a1bf2850e041614093fa0340588b9ced4e7780'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
