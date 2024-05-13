@@ -27,7 +27,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #     SECRET_KEY = os.environ["SECRET_KEY"]
 # except KeyError as e:
 #     raise RuntimeError("Could not find a SECRET_KEY in environment") from e
-SECRET_KEY='cbaa45b7774dc2433dcad6c037665c57f2db4fd113a1bf2850e041614093fa0340588b9ced4e7780'
 
 # Debug - определяет, будет ли включен режим отладки.
 # Не следует использовать этот режим в продакшн-сервере.
