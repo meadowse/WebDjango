@@ -29,7 +29,7 @@ urlpatterns = [
     path('cals/', include('CalsPage.urls')),
     path('email/', include('EmailPage.urls')),
     path('emailCount/', include('EmailCount.urls')),
-    # path('sms/', include('SMSPage.urls'))
+    path('planner/', include('planner.urls')),
 ]
 
 handler404 = pageNotFound

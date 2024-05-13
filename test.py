@@ -1,26 +1,12 @@
 import psycopg2
 
-try:
-    PASSWORD = os.environ["PASSWORD"]
-except KeyError as e:
-    raise RuntimeError("Could not find a PASSWORD in environment") from e
-
-try:
-    USER = os.environ["USER"]
-except KeyError as e:
-    raise RuntimeError("Could not find a USER in environment") from e
-
-try:
-    NAME = os.environ["NAME"]
-except KeyError as e:
-    raise RuntimeError("Could not find a NAME in environment") from e
 
 def db():
-    return psycopg2.connect(user=USER,
+    return psycopg2.connect(user="meadowse",
                             # пароль, который указали при установке PostgreSQL
-                            password=PASSWORD,
+                            password="Comebackplz56!!",
                             host="localhost",
-                            database=NAME)
+                            database="meadowse")
 
 
 def Insert_db(query, args=(), one=False):

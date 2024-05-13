@@ -1,10 +1,14 @@
+import mimetypes
+import os
+import re
+
 from django.contrib.auth import logout
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from EmailCount.views import printDocx
 from test import *
-from django.http import JsonResponse  # , HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.views.decorators.csrf import csrf_exempt
@@ -37,9 +41,12 @@ def index(request):
     names = ["Название компании", "ИНН", "Юр. адрес", "Должность руководителя", "Фио руководителя", "телефон", "сайт",
              "источник данных", "код активности", "доход", "рассылка по электронной почте", "рассылка по почте",
              "рассылка по смс", "звонки"]
-    Info = search(request, rez)
-    return render(request, 'dbServer/companies.html', {'title': "main", 'Companies': Info, 'names': names}) \
-        if request.method == 'GET' else JsonResponse(Info, safe=False)
+    Json = search(request, rez)
+    Info = Json.get('Info')
+    count = Json.get('count')
+    return render(request, 'dbServer/companies.html', {'title': "main", 'Companies': Info, 'count': count,
+                                                       'names': names})\
+        if request.method == 'GET' else JsonResponse(Json, safe=False)
 
 
 def info(request, catid):
@@ -97,11 +104,14 @@ def infoAboutObj(request):
 @csrf_exempt
 def extract(request):
     obj = json.loads(request.body)
-    cadastralNumber = obj.get('cadastralNumber')
-    cadastralNumber = cadastralNumber.replace(':', '-')
-    print(cadastralNumber)
-    excel_file_name = "/home/meadowse/media/" + cadastralNumber + "_" + obj.get('typeObject') + ".pdf"
-    return printDocx(excel_file_name)
+    cadastralNumber = obj.replace(':', '-')
+    pdf_file_name = ''
+    for root, dirs, files in os.walk('/home/meadowse/media/'):
+        for file in files:
+            match = re.search(cadastralNumber, file)
+            if match:
+                pdf_file_name = "/home/meadowse/media/" + file
+    return printDocx(pdf_file_name)
 
 
 def pageNotFound(request, exception):
@@ -110,14 +120,14 @@ def pageNotFound(request, exception):
 
 # sms
 def smsmainCourt(request):
-    Info = query_db("select * from private.universal_mailing u where u.type_mailing = 'СМС'")
+    info = query_db("select * from private.universal_mailing u where u.type_mailing = 'СМС'")
+    # print(info)
     names = ["Наименование рассылки", "Шаблон", "Кол-во писем", "Дата создания", "Дата отправки", "Ответственный",
              "Статус", "Привязанные контакты"]
     Companies = query_db("select * from private.all_data_companies limit 10")
     newsleter = (query_db("select * from private.templates"))
-    return render(request, 'EmailCount/mail.html', {'title': "main", 'mail': Info, 'names': names,
-                                                    'Companies': Companies, 'templateForSend': newsleter,
-                                                    'types_mailing': '3'})
+    return render(request, 'EmailCount/mail.html', {'title': "main", 'mail': info, 'names': names,
+                                                    'Companies': Companies, 'templateForSend': newsleter, 'types_mailing': '3'})
 
 
 # суд
@@ -136,8 +146,9 @@ def smsinfo(request, catid):
             "from private.mailing_companies mc where mc.id_mailing = %s)" % catid)
     Info = search(request, rez1)
     info2 = search(request, rez2)
-    return render(request, 'sms/updateMailing.html', {'NotInNewsletter': Info, 'InNewsletter': info2, 'template': catid,
-                                                      'types_mailing': '3'})
+    return render(request, 'sms/updateMailing.html',
+                  {'NotInNewsletter': Info, 'InNewsletter': info2,
+                                                      'template': catid,  'types_mailing': '3'})
 
 
 def courtinfo(request, catid):
@@ -145,8 +156,12 @@ def courtinfo(request, catid):
 
 
 def objectShow(request):
-    Info = query_db("select * from private.all_cadastral_numbers")
-    return render(request, 'dbServer/objects.html', {'objInfo': Info})
+    rez = "select * from private.all_data_cadastral_numbers"
+    Json = searchObjects(request, rez)
+    Info = Json.get('Info')
+    count = Json.get('count')
+    return render(request, 'dbServer/objects.html', {'objInfo': Info, 'count': count})\
+        if request.method == 'GET' else JsonResponse(Json, safe=False)
 
 
 def objectInfio(request, catid):

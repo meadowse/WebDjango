@@ -13,8 +13,62 @@
                 <input class="mailers-input" type="text" placeholder="Введите email">
             </div>
         </div>
+        <div class="table-block">
+            <div class="toggle-col">
+                <img src="{% static 'dbServer/images/columns.png'%}" alt="">Колонны
+                <ul class="toggle-col__list">
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" disabled checked>
+                            <span class="text">Наименование рассылки</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col2">
+                            <span class="text">Шаблон</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col3">
+                            <span class="text">Кол-во писем</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col4">
+                            <span class="text">Дата создания</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col5">
+                            <span class="text">Дата отправки</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col6">
+                            <span class="text">Ответственный</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col7">
+                            <span class="text">Статус</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col8">
+                            <span class="text">Привязанные контакты</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
             <div class="email-table-main table" id="table">
-                <div class="lists-table__col">
+                <div class="lists-table__col lists-table__col-border lists-table__col--not-resize">
                     <div class="lists-table__box">
                         <label for="check">
                             <input class="checkAllInput" id="checkAll" type="checkbox">
@@ -30,58 +84,6 @@
                 </div>
                 <div class="lists-table__col lists-table__col-name">
                     <div class="lists-table__box lists-table__box-name">
-                        <div class="toggle-col">
-                            <ul class="toggle-col__list">
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" disabled checked>
-                                        <span class="text">Наименование рассылки</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col2">
-                                        <span class="text">Шаблон</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col3">
-                                        <span class="text">Кол-во писем</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col4">
-                                        <span class="text">Дата создания</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col5">
-                                        <span class="text">Дата отправки</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col6">
-                                        <span class="text">Ответственный</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col7">
-                                        <span class="text">Статус</span>
-                                    </label>
-                                </li>
-                                <li class="toggle-col__li">
-                                    <label>
-                                        <input type="checkbox" checked id="col8">
-                                        <span class="text">Привязанные контакты</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
                         <p class="text head-text">Наименование <br>рассылки</p>
                     </div>
                     {% for i in Companies %}
@@ -168,5 +170,6 @@
                 </div>
             </div>
         </div>
+    </div>
 </div>
 {% endblock %}

@@ -4,14 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabs = document.querySelectorAll('.tabs-item');
     const overlay = document.querySelector('.overlay');
     const loadImg = document.querySelector('.load-img');
+    let numsWrap = document.querySelector('.more-navigation__nums');
 
     /*активное меню*/
     const menuItems = document.querySelectorAll('.menu-li');
-
     if (menuItems) {
         menuItems.forEach(item => {
             let dataItem = item.getAttribute('data-url');
-            window.location.pathname == dataItem ? item.classList.add('active') : false;
+            window.location.pathname.includes(`${dataItem}`) ? item.classList.add('active') : false;
         });
     }
     const checkBtnAll = document.getElementById('checkAll'),
@@ -23,11 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
         allInputsChecked = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
 
     /*drop*/
-    const columns = document.querySelectorAll('.lists-table .lists-table__col:not(.table-check) .lists-table__box:first-child');
+    const columns = document.querySelectorAll('.table-block .toggle-col__li');
     if (columns) {
-        columns.forEach(item => item.insertAdjacentHTML("afterbegin",
-            `<div class="table__col-sort table__col-incr find" data-sort="0"></div>
-            <div class="table__col-sort table__col-decr find" data-sort="1"></div>`))
+        columns.forEach(item => item.insertAdjacentHTML("beforeend",
+            `<div class="table__col-sort-box">
+                <div class="table__col-sort table__col-incr find" data-sort="1"></div>
+                <div class="table__col-sort table__col-decr find" data-sort="0"></div>
+            </div>`));
+
+        document.querySelectorAll(".table__col-sort").forEach(item => item.addEventListener("click", () => {
+            document.querySelectorAll(".table__col-sort").forEach(item => { item.classList.remove('table__col-sort--active'); });
+            item.classList.add('table__col-sort--active');
+        }));
     }
 
     changeTables();
@@ -52,10 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /*form*/
-    const form = document.querySelector('.header-input');
-    const filter = document.querySelector('.filter-search__wrap');
-    const filterCompany = document.querySelector('.filter-company');
-    const addLetter = document.getElementById('addLetter');
+    const form = document.querySelector('.header-input'),
+        filter = document.querySelector('.filter-search__wrap'),
+        navPrev = document.querySelector('.more-navigation__wrap .prev'),
+        navNext = document.querySelector('.more-navigation__wrap .next'),
+        filterCompany = document.querySelector('.filter-company'),
+        addLetter = document.getElementById('addLetter');
+
+    let navPages = document.querySelectorAll('.more-navigation__num');
 
     filterCompany ? form.addEventListener('click', () => filter.classList.toggle('filter-search--active')) : false;
 
@@ -65,10 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*фильтр*/
     let dbParams = {},
-        limit,
+        count,
+        limit = document.querySelector('.limit-sort span'),
         desc,
         search = document.querySelector('.header-input'),
-        revenue = document.querySelector('#revenue input'),
+        revenue = document.querySelector('#revenueNum input'),
         comparison,
         data_source,
         absence,
@@ -76,7 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
         email_newsletter,
         mail_newsletter,
         sms_mailing,
-        the_bell;
+        countPage = 0,
+        currentPage = 1,
+        counterVal = document.querySelector('.counter-1'),
+        counterVal2 = document.querySelector('.counter-2'),
+        the_bell,
+        finds = document.querySelectorAll('.find'),
+        countArray = [];
+    let localSettings = JSON.parse(localStorage.getItem('settings'));
 
     /*сброс фильтра*/
     document.querySelector('.reset').addEventListener('click', (e) => {
@@ -88,14 +107,16 @@ document.addEventListener("DOMContentLoaded", () => {
         search.value = '';
         revenue.value = '';
         dbParams = {};
-        limit = document.querySelector('.table-sort span').textContent;
+        // limit = document.querySelector('.limit-sort span');
         document.querySelectorAll('.filter-search__item-empty input').forEach(item => item.checked = false);
         document.querySelectorAll('.filter-search__item .filter-drop span').forEach(item => {
             item.textContent = 'Не выбрано';
             item.dataset.result ? item.removeAttribute('data-result') : false;
         });
 
-        comparison = document.querySelector('#revenue .filter-drop span');
+        limit ? limit = limit.textContent : false;
+
+        comparison = document.querySelector('#revenueNum .filter-drop span');
 
         data_source = document.querySelector('.source span');
         comparison.textContent = data_source.textContent = 'Не выбран';
@@ -103,62 +124,98 @@ document.addEventListener("DOMContentLoaded", () => {
         data_source.dataset.result ? data_source.removeAttribute('data-result') : false;
 
         dbParams.limit = limit;
-        console.log(dbParams);
+        console.log("dbParams", dbParams);
         postRequest(dbParams, tableDataProcess);
         changeTables();
+        localStorage.clear();
     });
+    console.log("dbParams", dbParams);
 
+    /*сбор данных на сервер для фильтрации данных*/
     /*нажатие на кнопку фильтрации\поиска */
-    document.querySelectorAll('.find').forEach(filterBtn => {
-        filterBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+    function funcFilter(e) {
+        if (e.target.closest('.navigation-current')) return false;
 
-            loadFilterData();
+        e.preventDefault();
 
-            // сортировка по столбцам: 0 - возрастанию, 1 - убыванию
-            e.target.closest('.table__col-sort') ? dbParams.desc = +e.target.dataset.sort : false;
-            e.target.closest('.lists-table__col') ? dbParams['order by'] = e.target.closest('.lists-table__col').dataset.val : false;
+        loadFilterData();
+        countArray = [];
 
-            //кол - во строк
-            e.target.closest('.table-sort .drop__item') ? limit = e.target.dataset.drop : limit = document.querySelector('.table-sort span').textContent;
-            dbParams.limit = limit;
+        // сортировка по столбцам: 0 - возрастанию, 1 - убыванию
+        e.target.closest('.table__col-sort') ? dbParams.desc = +e.target.dataset.sort : false;
+        e.target.closest('.toggle-col__li') ? dbParams['order by'] = e.target.closest('.toggle-col__li').dataset.val : false;
 
-            /*сбор данных в поле фильтрации*/
-            // исключить пустые строки столбцов, это массив перечисленных столбцов, в которых надо исключить пустые строки
-            absence = [];
-            document.querySelectorAll('.filter-search__item-empty input').forEach(item => item.checked === true ? absence.push(item.id) : false);
-            absence.length > 0 ? dbParams.absence = absence : delete dbParams.absence;
+        //кол - во строк
+        e.target.closest('.limit-sort .drop__item') ? limit = e.target.dataset.drop : (document.querySelector('.limit-sort span') ? limit = document.querySelector('.limit-sort span').textContent : false);
+        dbParams.limit = +limit;
 
-            // что мы ищем
-            search.value != '' ? dbParams.search = search.value : delete dbParams.search;
+        /*сбор данных в поле фильтрации*/
+        // исключить пустые строки столбцов, это массив перечисленных столбцов, в которых надо исключить пустые строки
+        absence = [];
+        document.querySelectorAll('.filter-search__item-empty input').forEach(item => item.checked === true ? absence.push(item.id) : false);
+        absence.length > 0 ? dbParams.absence = absence : delete dbParams.absence;
 
-            // источник данных
-            data_source = document.querySelector('.source span');
-            data_source.dataset.result ? dbParams.data_source = data_source.dataset.result : delete dbParams.data_source;
+        // что мы ищем
+        search.value != '' ? dbParams.search = search.value : delete dbParams.search;
 
-            // значение от которого отталкиваемся в обороте, 0 - равно, 1 - больше, -1 - меньше
-            comparison = document.querySelector('#revenue .filter-drop span');
-            comparison.dataset.result ? comparison = +comparison.dataset.result : false;
-            if (comparison != null && revenue.value != '') {
-                dbParams.comparison = comparison;
-                dbParams.revenue = revenue.value;
-            }
+        // источник данных
+        data_source = document.querySelector('.source span');
+        data_source.dataset.result ? dbParams.data_source = data_source.dataset.result : delete dbParams.data_source;
 
-            //участвовал в рассылке: 1 - Да, 0 - Нет
-            email_newsletter = document.querySelector('#email_newsletter .filter-drop span');
-            mail_newsletter = document.querySelector('#mail_newsletter .filter-drop span');
-            sms_mailing = document.querySelector('#sms_mailing .filter-drop span');
-            the_bell = document.querySelector('#the_bell .filter-drop span');
+        // значение от которого отталкиваемся в обороте, 0 - равно, 1 - больше, -1 - меньше
+        comparison = document.querySelector('#revenueNum .filter-drop span');
+        comparison.dataset.result ? comparison = +comparison.dataset.result : false;
+        if (comparison != null && revenue.value != '') {
+            dbParams.comparison = comparison;
+            dbParams.revenue = revenue.value;
+        }
 
-            email_newsletter.dataset.result ? dbParams.email_newsletter = +email_newsletter.dataset.result : delete dbParams.email_newsletter;
-            mail_newsletter.dataset.result ? dbParams.mail_newsletter = +mail_newsletter.dataset.result : delete dbParams.mail_newsletter;
-            sms_mailing.dataset.result ? dbParams.sms_mailing = +sms_mailing.dataset.result : delete dbParams.sms_mailing;
-            the_bell.dataset.result ? dbParams.the_bell = +the_bell.dataset.result : delete dbParams.the_bell;
+        // постраничная навигация
+        if (e.target.dataset.num) {
+            currentPage = +e.target.dataset.num;
+            dbParams.page = currentPage;
+            changeNavPrev();
+            changeNavNext();
+        }
 
-            console.log('dbParams', dbParams);
-            postRequest(dbParams, tableDataProcess);
-        });
-    });
+        if (e.target.closest('.more-navigation__wrap .next')) {
+            countPage == currentPage ? false : ++currentPage;
+            changeNavPrev();
+            changeNavNext();
+        }
+
+        if (e.target.closest('.more-navigation__wrap .prev')) {
+            currentPage <= 1 ? false : dbParams.page = --currentPage;
+            changeNavPrev();
+            changeNavNext();
+        }
+
+        //расчет текущей страницы при изменении limit
+        let currentNumLimit = Math.ceil((currentPage * document.querySelector('.limit-sort span').textContent) / limit);
+        currentNumLimit > countPage ? currentPage = dbParams.page = countPage : currentPage = dbParams.page = currentNumLimit;
+
+        e.target.closest('.filter-btn') === null || navPages && navPages.length <= 29 && e.target.closest('.drop__item') === null ? false : currentPage = dbParams.page = 1;
+
+        changeNavPrev();
+
+        //участвовал в рассылке: 1 - Да, 0 - Нет
+        email_newsletter = document.querySelector('#email_newsletter .filter-drop span');
+        mail_newsletter = document.querySelector('#mail_newsletter .filter-drop span');
+        sms_mailing = document.querySelector('#sms_mailing .filter-drop span');
+        the_bell = document.querySelector('#the_bell .filter-drop span');
+
+        email_newsletter.dataset.result ? dbParams.email_newsletter = +email_newsletter.dataset.result : delete dbParams.email_newsletter;
+        mail_newsletter.dataset.result ? dbParams.mail_newsletter = +mail_newsletter.dataset.result : delete dbParams.mail_newsletter;
+        sms_mailing.dataset.result ? dbParams.sms_mailing = +sms_mailing.dataset.result : delete dbParams.sms_mailing;
+        the_bell.dataset.result ? dbParams.the_bell = +the_bell.dataset.result : delete dbParams.the_bell;
+
+        console.log('dbParams', dbParams);
+        postRequest(dbParams, tableDataProcess);
+
+        localStorage.setItem('settings', JSON.stringify(dbParams));
+    }
+
+    finds.forEach(filterBtn => filterBtn.addEventListener('click', (e) => funcFilter(e)));
 
     /*POST запрос*/
     function postRequest(params, func) {
@@ -173,50 +230,228 @@ document.addEventListener("DOMContentLoaded", () => {
             return data;
         }).then(data => {
             if (data === undefined) return false;
-            let newData = parserData(data);
 
+            let newData = JSON.parse(data);
+            console.log('newData', newData);
             return newData;
 
         }).then(newData => {
             func(newData);
         }).catch(err => console.error("failed", err));
+
+        changeTables();
+        revenueProcess();
     }
 
-    /*рендер таблицы с отфильтрованными значениями*/
-    let rows,
-        cols,
-        objValue = 0,
-        dataCol = '';
+    function saveFilterSettings() {
+        localSettings = JSON.parse(localStorage.getItem('settings'));
+        if (localSettings != null) {
+            loadFilterData();
 
-    function parserData(data, NotInNewsletter, InNewsletter) {
-        data = JSON.parse(data);
-        if (typeof (data) == 'object') {
-            InNewsletter = JSON.parse(data.InNewsletter);
-            NotInNewsletter = JSON.parse(data.NotInNewsletter);
-            let parseObj = { NotInNewsletter, InNewsletter }
-            return parseObj;
-        } else { return JSON.parse(data); }
-    }
+            postRequest(JSON.parse(localStorage.getItem('settings')), tableDataProcess);
 
-    function tableDataProcess(data) {
-        if (!Array.isArray(data)) {
-            let objKeys = Object.keys(data);
-            for (let i = 0; i <= objKeys.length - 1; i++) {
-                let objValues = Object.values(data);
-                switch (objKeys[i]) {
-                    case 'NotInNewsletter':
-                        renderFilterData(objValues[i], "#NotInNewsletter");
-                        break;
-                    case 'InNewsletter':
-                        renderFilterData(objValues[i], "#InNewsletter");
-                        break;
+            localSettings.absence != null ? document.querySelectorAll('.filter-search__item-empty input').forEach(input => {
+                localSettings.absence.forEach(item => input.id == item ? input.checked = true : false);
+            }) : false;
+
+            function filterRasilka(valueStorage, block) {
+                if (block && valueStorage != null) {
+                    const item = document.querySelector(`${block} .filter-drop span`);
+                    if (item) {
+                        item.setAttribute('data-result', valueStorage);
+                        item.textContent = document.querySelector(`${block} .drop__item[data-drop='${valueStorage}']`).textContent;
+                    }
                 }
             }
-        } else {
-            renderFilterData(data, "#tableCompany");
+
+            filterRasilka(localSettings.data_source, '#source');
+            filterRasilka(localSettings.email_newsletter, '#email_newsletter');
+            filterRasilka(localSettings.sms_mailing, '#sms_mailing');
+            filterRasilka(localSettings.mail_newsletter, '#mail_newsletter');
+            filterRasilka(localSettings.the_bell, '#the_bell');
+            filterRasilka(localSettings.limit, '.more-box');
+            filterRasilka(localSettings.comparison, '#revenueNum');
+            document.querySelector('#revenueNum input').value = localSettings.comparison;
+
+            /*рендер пагинации исходя из сохраненных настроек при перезагрузке страницы*/
+            if (localSettings.page) {
+
+                for (let i = 0; i <= navPages.length; i++) {
+                    if (navPages[i]) {
+                        navPages[i].classList.remove('navigation-current');
+                        navPages[i].dataset.num == +localSettings.page ? navPages[i].classList.add('navigation-current') : false;
+                    }
+                }
+                clearWrap(numsWrap);
+
+                currentPage = +localSettings.page;
+
+                changeNavPrev();
+                for (let j = (currentPage - 15); j <= (currentPage + 15); j++)  renderPagination(j);
+            }
+        }
+    }
+
+    window.addEventListener("load", () => {
+        saveFilterSettings();
+        navigation();
+        revenueProcess();
+    });
+
+    /*рендер таблицы с отфильтрованными значениями*/
+    let objValue = 0;
+
+    function tableDataProcess(data) {
+        let objKeys = Object.keys(data);
+        console.log('objKeys', objKeys);
+        for (let i = 0; i <= objKeys.length - 1; i++) {
+            let objValues = Object.values(data);
+            switch (objKeys[i]) {
+                case 'NotInNewsletter':
+                    counterVal ? counterVal.textContent = data.count : false;
+                    renderFilterData(objValues[i], "#NotInNewsletter");
+                    break;
+                case 'InNewsletter':
+                    counterVal2 ? counterVal2.textContent = data.count2 : false;
+                    renderFilterData(objValues[i], "#InNewsletter");
+                    break;
+                case 'Info':
+                    counterVal ? counterVal.textContent = data.count : false;
+                    renderFilterData(objValues[i], "#tableCompany");
+                    break;
+                case 'objInfo':
+                    counterVal ? counterVal.textContent = data.count : false;
+                    renderFilterData(objValues[i], "#tableObjects");
+                    break;
+            }
+            console.log("objValues", objValues);
         }
         checkAllInputs(checkAllRemove, document.querySelectorAll('.update-right .lists-table__box:not(.lists-table__box-name) input'));
         checkAllInputs(checkAllAdd, document.querySelectorAll('.update-left .lists-table__box:not(.lists-table__box-name) input'));
+        revenueProcess();
+        navigation();
+    }
+
+    function navigation() {
+        const counters = document.querySelectorAll('.counter');
+        if (counters) {
+            const tableItems = document.querySelectorAll('.lists-table__col-name .lists-table__box:not(.lists-table__box-name)'),
+                navWrap = document.querySelector('.more-navigation__wrap');
+
+            let lastNum = document.querySelector('.more-navigation__num-last'),
+                firstNum = document.querySelector('.more-navigation__num-first'),
+                navArray = [],
+                sumCompany;
+
+            clearWrap(numsWrap);
+            countPage = 0;
+
+            document.querySelector('.limit-sort span') ? limit = document.querySelector('.limit-sort span').textContent : false;
+
+            counters.forEach(counter => {
+                navArray.push(counter.textContent);
+                return sumCompany = Math.max.apply(null, navArray);
+            });
+
+            dispFlex(navWrap);
+
+            if (tableItems && tableItems.length >= +sumCompany) return dispNone(navWrap), false;
+
+            countPage = Math.ceil(sumCompany / +limit);
+            changeNavNext();
+
+            /*рендер пагинации*/
+            for (let i = 2; i <= countPage; i++)  i < 30 ? renderPagination(i) : false;
+
+            /*рендер пагинации на последних страницах*/
+            if (currentPage >= countPage - 16 && currentPage >= countPage - navPages.length) {
+                clearWrap(numsWrap);
+                for (let y = countPage - (navPages.length - 2); y < countPage; y++)  renderPagination(y);
+            }
+
+            /*рендер пагинации с центральной активной страницей*/
+            if (currentPage >= 18 && currentPage <= countPage - 17) {
+                clearWrap(numsWrap);
+                for (let j = (currentPage - 15); j <= (currentPage + 15); j++)  renderPagination(j);
+            }
+            dbParams.page = currentPage;
+            finds = document.querySelectorAll('.find');
+
+            lastNum ? lastNum.textContent = `${countPage}` : false;
+            lastNum ? lastNum.setAttribute("data-num", `${countPage}`) : false;
+
+            removeDotsAfter();
+            removeDotsBefore();
+            if (navPages.length != 0) {
+                navPages[navPages.length - 1].insertAdjacentHTML('beforebegin', `<span class="after-dots">...</span>`);
+
+                if (navPages.length <= 29) {
+                    clearWrap(numsWrap);
+                    dispNone(firstNum);
+                    dispNone(lastNum);
+                    for (let i = 1; i <= countPage; i++)  i < 30 ? renderPagination(i) : false;
+                    removeDotsAfter();
+                    removeDotsBefore();
+                } else {
+                    dispFlex(firstNum);
+                    dispFlex(lastNum);
+                }
+                for (let i = 0; i <= navPages.length; i++) {
+                    if (navPages[i]) {
+                        navPages[i].classList.remove('navigation-current');
+                        navPages[i].dataset.num == dbParams.page ? navPages[i].classList.add('navigation-current') : false;
+                        if (navPages[i].classList.contains('navigation-current') &&
+                            navPages[i].dataset.num >= countPage - (Math.floor(navPages.length / 2))) {
+                            removeDotsAfter();
+                        }
+                        if (navPages[i].classList.contains('navigation-current') && navPages[i].dataset.num >= 18 && navPages.length >= 29) {
+                            navPages[0].insertAdjacentHTML('afterend', `<span class="before-dots">...</span>`);
+                        } else if (navPages[i].classList.contains('navigation-current') && navPages[i].dataset.num <= 17) {
+                            removeDotsBefore();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function renderPagination(num) {
+        let numPage = document.createElement('div');
+        numPage.classList.add('more-navigation__num');
+        numPage.setAttribute("data-num", num);
+        numPage.textContent = `${num}`;
+        numsWrap.append(numPage);
+        navPages = document.querySelectorAll('.more-navigation__num');
+    }
+
+    function removeDotsBefore() {
+        const beforeDots = document.querySelector('.before-dots');
+        beforeDots ? beforeDots.remove() : false;
+    }
+
+    function removeDotsAfter() {
+        const afterDots = document.querySelector('.after-dots');
+        afterDots ? afterDots.remove() : false;
+    }
+
+    /*Обработка выручки*/
+    function revenueProcess() {
+        let revenueVal = document.querySelectorAll('.revenue-value');
+        if (revenueVal) {
+            revenueVal.forEach(val => {
+                if (val.textContent == 'None' || val.textContent == '0' || val.textContent == '' || val.textContent.length == 0) {
+                    return false;
+                } else if (val.textContent.length < 7) {
+                    val.textContent = +val.textContent.slice(0, -3) + " тыс. ₽";
+                } else if (val.textContent.length < 10) {
+                    val.textContent = +val.textContent.slice(0, -6) + " млн. ₽";
+                } else if (val.textContent.length < 13) {
+                    val.textContent = +val.textContent.slice(0, -9) + " млрд. ₽";
+                } else if (val.textContent.length < 16) {
+                    val.textContent = +val.textContent.slice(0, -12) + " трлн. ₽";
+                }
+            });
+        }
     }
 
     function afterFilter() {
@@ -230,34 +465,66 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.classList.add('overlay--active');
     }
 
+    function clearWrap(wrap) {
+        wrap ? wrap.innerHTML = '' : false;
+    }
+
+    function dispNone(item) {
+        item ? item.style.display = "none" : false;
+    }
+
+    function dispFlex(item) {
+        item ? item.style.display = "flex" : false;
+    }
+
+    function changeNavPrev() {
+        currentPage <= 1 ? dispNone(navPrev) : dispFlex(navPrev);
+    }
+
+    function changeNavNext() {
+        countPage == currentPage ? dispNone(navNext) : dispFlex(navNext);
+    }
+
     function renderFilterData(data, id, ...args) {
         const renderTable = document.querySelector(`${id}`),
-            renderEmpty = renderTable.querySelector('.filter-empty');
+            renderEmpty = renderTable.querySelector('.filter-empty'),
+            tableCheck = renderTable.querySelector(`.table-check`);
+
+        let rows,
+            dataCol = '',
+            cols,
+            rasID = window.location.pathname.replace(/[^+\d]/g, '');
 
         if (data === false || data.length < 1) {
             renderEmpty ? false : renderTable.insertAdjacentHTML("afterbegin", `<div class="filter-empty">По Вашему запросу ничего не найдено</div>`);
             return false;
         }
-
         renderEmpty ? renderEmpty.remove() : false;
 
-        const tableCheck = renderTable.querySelector(`.table-check`);
         rows = renderTable.querySelectorAll(`.lists-table__col .lists-table__box:not(:first-child)`);
         cols = renderTable.querySelectorAll(`.lists-table__col:not(.table-check)`);
+
+        const renderCheckBox = (i, checkBox, attrClass, attrName = '') => {
+            checkBox.insertAdjacentHTML('afterbegin',
+                `<label for="check">
+                    <input type="checkbox" value="${Object.values(data[i])[2]}, ${rasID}" ${attrName} class="${attrClass}">
+                    <span></span>
+                </label>`);
+        }
 
         if (rows && cols) {
             filter.classList.remove('filter-search--active');
             rows.forEach(row => row.remove());
 
             for (let i = 0; i <= data.length - 1; i++) {
+
                 if (tableCheck) {
+
                     let renderCheck = document.createElement('div');
                     renderCheck.classList.add('lists-table__box');
-                    renderCheck.insertAdjacentHTML('afterbegin',
-                        `<label for="check">
-                            <input type="checkbox" value="${Object.values(data[i])[1]}">
-                            <span></span>
-                        </label>`);
+
+                    renderTable.id == 'InNewsletter' ? renderCheckBox(i, renderCheck, 'removeFromNewsletter', 'name="interest"') : renderCheckBox(i, renderCheck, 'needad');
+
                     tableCheck.append(renderCheck);
                 }
 
@@ -272,53 +539,54 @@ document.addEventListener("DOMContentLoaded", () => {
                     objValue[x] === null ? objValue[x] = '' : objValue[x];
 
                     switch (objKey) {
+                        case 'id':
+                            break;
                         case 'company_name':
-                            // href="{% url 'info' i.inn_company %}"
-                            item.innerHTML = `<p class="text"><a href="/${objValue[1]}/">${objValue[0]}</a></p>`;
+                            item.innerHTML = `<p class="text"><a href="/${objValue[2]}/">${objValue[1]}</a></p>`;
                             colName.append(item);
                             break;
                         case 'inn_company':
-                            renderItem(1, item, '', id);
+                            renderItem(2, item, '', id, dataCol);
                             break;
                         case 'legal_address':
-                            renderItem(2, item, '', id);
+                            renderItem(3, item, '', id, dataCol);
                             break;
                         case 'position_head':
-                            renderItem(3, item, '', id);
+                            renderItem(4, item, '', id, dataCol);
                             break;
                         case 'fio_head':
-                            renderItem(4, item, '', id);
+                            renderItem(5, item, '', id, dataCol);
                             break;
                         case 'telephone':
-                            renderItem(5, item, 'tel:', id);
+                            renderItem(6, item, 'tel:', id, dataCol);
                             break;
                         case 'mail':
-                            renderItem(6, item, 'mailto:', id);
+                            renderItem(7, item, 'mailto:', id, dataCol);
                             break;
                         case 'website':
-                            item.innerHTML = `<p class="text"><a href="${objValue[7]}" target="_blank">${objValue[7]}</a></p>`;
-                            dataCol = 'col7' ? colNum(7, id).append(item) : false;
+                            item.innerHTML = `<p class="text"><a href="${objValue[8]}" target="_blank">${objValue[8]}</a></p>`;
+                            dataCol = 'col8' ? colNum(8, id).append(item) : false;
                             break;
                         case 'data_source':
-                            renderItem(8, item, '', id);
+                            renderItem(9, item, '', id, dataCol);
                             break;
                         case 'type_activity':
-                            renderItem(9, item, '', id);
+                            renderItem(10, item, '', id, dataCol);
                             break;
                         case 'revenue':
-                            renderItem(10, item, '', id);
+                            renderItem(11, item, '', id, dataCol);
                             break;
                         case 'email_newsletter':
-                            renderItem(11, item, '', id);
+                            renderItem(12, item, '', id, dataCol);
                             break;
                         case 'mail_newsletter':
-                            renderItem(12, item, '', id);
+                            renderItem(13, item, '', id, dataCol);
                             break;
                         case 'sms_mailing':
-                            renderItem(13, item, '', id);
+                            renderItem(14, item, '', id, dataCol);
                             break;
                         case 'the_bell':
-                            renderItem(14, item, '', id);
+                            renderItem(15, item, '', id, dataCol);
                             break;
                         default:
                             item.innerHTML = `<p class="text">${objValue[x]}</p>`;
@@ -334,13 +602,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return document.querySelector(`${id} .lists-table__col[data-col="col${n}"]`);
     }
 
-    function renderItem(num, item, method, id) {
-        if (num == 5 || num == 6) {
+    function renderItem(num, item, method, id, dataCol) {
+        if (num == 6 || num == 7) {
             let links = objValue[num];
             if (links) {
                 item.innerHTML = `<p class="text text-flex"></p>`;
                 links.forEach(link => item.querySelector('.text-flex').insertAdjacentHTML("afterbegin", `<a href="${method}${link}">${link},</a>`));
             }
+        } else if (num == 11) {
+            item.innerHTML = `<p class="text revenue-value">${objValue[num]}</p>`;
         } else { item.innerHTML = `<p class="text">${objValue[num]}</p>`; }
 
         dataCol = `col${num}` ? colNum(num, id).append(item) : false;
@@ -348,19 +618,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*tables*/
     function changeTables() {
-        const tables = document.querySelectorAll('.table');
-        if (tables) {
-            tables.forEach(table => {
-                const colItems = table.querySelectorAll('.lists-table__col[data-col]');
-                const colInputs = table.querySelectorAll('.toggle-col__li input');
+        const tablesBlock = document.querySelectorAll('.table-block');
+        if (tablesBlock) {
+            tablesBlock.forEach(block => {
+                const table = block.querySelector('.table');
+                const colItems = block.querySelectorAll('.lists-table__col[data-col]');
+                const colInputs = block.querySelectorAll('.toggle-col__li input');
 
                 /*show or hide column*/
-                const toggles = table.querySelectorAll('.toggle-col');
+                const toggles = document.querySelectorAll('.toggle-col');
 
                 if (toggles) {
                     toggles.forEach(toggle => {
                         toggle.addEventListener('click', () => toggle.classList.add('toggle-col--active'));
-                        document.addEventListener('click', (e) => !e.target.closest('.toggle-col') ? toggle.classList.remove('toggle-col--active') : false);
+                        document.addEventListener('click', (e) => !e.target.closest('.toggle-col') || e.target.closest('.table__col-sort') ? toggle.classList.remove('toggle-col--active') : false);
                         showOrHideElements(colInputs, 'data-col', colItems);
                     });
                 }
@@ -410,27 +681,22 @@ document.addEventListener("DOMContentLoaded", () => {
                         updateTable();
                     }
                 }
-            });
+                resizeCol();
 
-            resizeCol();
-
-            /*resize columns*/
-            function updateTable() {
-                tables.forEach(table => {
+                /*resize columns*/
+                function updateTable() {
                     $(table).colResizable({ disable: true });
 
                     resizeCol();
-                });
-            }
+                }
 
-            function resizeCol() {
-                tables.forEach(table => {
+                function resizeCol() {
                     $(table).colResizable({
                         liveDrag: true,
                         resizeMode: 'overflow'
                     });
-                });
-            }
+                }
+            });
         }
     }
 
@@ -459,7 +725,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             btnAll.addEventListener("click", () => {
-                console.log('fsdfsdfsdf');
                 for (let j = 0; j < inputs.length; j++) inputs[j].checked = btnAll.checked;
                 btnAll.indeterminate = false;
             });
@@ -525,44 +790,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
-function buttonadd() {
-    let checkboxes = document.querySelectorAll("input[class='needad']:checked");
-    let valuesArray = []; // Используйте массив объектов
-    for (let i = 0; i < checkboxes.length; i++) {
-        let values = {}; // Создайте новый объект значений для каждого чекбокса
-        values['check_' + i] = [checkboxes[i].value]; // Задаем значение поля
-        valuesArray.push(values); // Добавьте объект значений в массив
-    }
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/emailCount/addTarget/", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(valuesArray)); // Отправьте массив значений
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            location.reload();
-        }
-    }
-}
-
-function buttonRemove() {
-    let checkboxes = document.querySelectorAll("input[name='interest']:checked");
-    let valuesArray = []; // Используйте массив объектов
-    for (let i = 0; i < checkboxes.length; i++) {
-        let values = {}; // Создайте новый объект значений для каждого чекбокса
-        values['check_' + i] = [checkboxes[i].value]; // Задаем значение поля
-        valuesArray.push(values); // Добавьте объект значений в массив
-    }
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/emailCount/removeTarget/", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(valuesArray)); // Отправьте массив значений
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            location.reload();
-        }
-    }
-}
 
 function objects(id_cadastr, id_companys) {
     let xhr = new XMLHttpRequest();
@@ -672,47 +899,47 @@ function testFunct() {
 function createLabels() {
     let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
     let values = [];
-    if (checkboxes.length == 0 || checkboxes.length > 1) {
+    if (checkboxes.length > 1) {
         alert("Необходимо выбрать только одну рассылку")
     } else {
-        for (let i = 0; i < checkboxes.length; i++) {
-            values.push([checkboxes[i].value]);
-            // alert(checkboxes[i].value);
-        }
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/emailCount/createLabels/", true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(values)); // Отправьте массив значений
-        xhr.responseType = "blob";
-        xhr.onreadystatechange = function () {
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var fileName = "downloaded_file.docx"; // Задайте имя файла для скачивания
-                    var a = document.createElement("a");
-                    a.href = window.URL.createObjectURL(xhr.response);
-                    a.download = fileName;
-                    a.style.display = "none";
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
+        if (checkboxes.length === 0) {
+            alert("Необходимо выбрать хотя бы одну рассылку")
+        } else {
+            values.push([checkboxes[0].value]);
+            const arr = values[0][0].split(', ');
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/emailCount/createLabels/", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(values)); // Отправьте массив значений
+            xhr.responseType = "blob";
+            xhr.onreadystatechange = function () {
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var fileName = "Наклейки " + arr[arr.length - 1] + ".zip"; // Задайте имя файла для скачивания
+                        var a = document.createElement("a");
+                        a.href = window.URL.createObjectURL(xhr.response);
+                        a.download = fileName;
+                        a.style.display = "none";
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                    }
                 }
             };
         }
     }
 }
 
-function removeLine(){
-       let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
+function buttonadd() {
+    let checkboxes = document.querySelectorAll("input[class='needad']:checked");
     let valuesArray = []; // Используйте массив объектов
     for (let i = 0; i < checkboxes.length; i++) {
         let values = {}; // Создайте новый объект значений для каждого чекбокса
         values['check_' + i] = [checkboxes[i].value]; // Задаем значение поля
         valuesArray.push(values); // Добавьте объект значений в массив
     }
-
     var xhr = new XMLHttpRequest();
-
-    xhr.open("POST", "/emailCount/removeLine/", true);
+    xhr.open("POST", "/emailCount/addTarget/", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(valuesArray)); // Отправьте массив значений
     xhr.onreadystatechange = function () {
@@ -722,32 +949,92 @@ function removeLine(){
     }
 }
 
-function createLetters(){
+function buttonRemove() {
+    let checkboxes = document.querySelectorAll("input[name='interest']:checked");
+    let valuesArray = []; // Используйте массив объектов
+    for (let i = 0; i < checkboxes.length; i++) {
+        let values = {}; // Создайте новый объект значений для каждого чекбокса
+        values['check_' + i] = [checkboxes[i].value]; // Задаем значение поля
+        valuesArray.push(values); // Добавьте объект значений в массив
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/emailCount/removeTarget/", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(valuesArray)); // Отправьте массив значений
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            location.reload();
+        }
+    }
+}
+
+function removeLine() {
     let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
+    let valuesArray = []; // Используйте массив объектов
     let values = [];
-    if (checkboxes.length === 0 || checkboxes.length > 1) {
+    for (let i = 0; i < checkboxes.length; i++) {
+        values = checkboxes[i].value.split(', ');
+        if (values[2] !== 'Отправлено') {
+            let values = {}; // Создайте новый объект значений для каждого чекбокса
+            values['check_' + i] = [checkboxes[i].value]; // Задаем значение поля
+            valuesArray.push(values); // Добавьте объект значений в массив
+        }
+    }
+    var cadel = 0
+    try {
+        if (valuesArray.length > 0) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/emailCount/removeLine/", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(valuesArray)); // Отправьте массив значений
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    location.reload();
+                } else {
+                    if (cadel < 1) {
+                        alert("Не получилось удалить рассылки. Убедитесь, что в рассылках нет компаний.");
+                        cadel = 1;
+                    }
+                }
+            }
+        } else {
+            alert("Удаление запрещено")
+        }
+    } catch {
+        alert("Не получилось удалить рассылки. Убедитесь, что в рассылках нет компаний.");
+    }
+}
+
+function createLetters(type_letter) {
+    let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
+    let value;
+    if (checkboxes.length > 1) {
         alert("Необходимо выбрать только одну рассылку")
     } else {
-        for (let i = 0; i < checkboxes.length; i++) {
-            values.push([checkboxes[i].value]);
-            // alert(checkboxes[i].value);
-        }
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/emailCount/createLetters/", true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(values)); // Отправьте массив значений
-        xhr.responseType = "blob";
-        xhr.onreadystatechange = function () {
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var fileName = "downloaded_file.docx"; // Задайте имя файла для скачивания
-                    var a = document.createElement("a");
-                    a.href = window.URL.createObjectURL(xhr.response);
-                    a.download = fileName;
-                    a.style.display = "none";
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
+        if (checkboxes.length === 0) {
+            alert("Необходимо выбрать хотя бы одну рассылку")
+        } else {
+            value = checkboxes[0].value.split(', ');
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/emailCount/createLetters/", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            let tmp_json = JSON.stringify(type_letter + "; " + value[0]);
+            xhr.send(tmp_json); // Отправьте массив значений
+            xhr.responseType = "blob";
+            xhr.onreadystatechange = function () {
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var fileName = "Письма " + type_letter + ' ' + value[1] + ".zip"; // Задайте имя файла для скачивания
+                        var a = document.createElement("a");
+                        a.href = window.URL.createObjectURL(xhr.response);
+                        a.download = fileName;
+                        a.style.display = "none";
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                    } else {
+                        alert("не получилось создать ")
+                    }
                 }
             };
         }
@@ -757,13 +1044,10 @@ function createLetters(){
 function extract() {
     var source = document.getElementById("CadastrNum");
     var cadastralNumber = source.textContent;
-    source = document.getElementById("ObjView");
-    var typeObject = source.textContent;
-    var value = {'cadastralNumber': cadastralNumber, 'typeObject' : typeObject};
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/extract/", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(value)); // Отправить json
+    xhr.send(JSON.stringify(cadastralNumber)); // Отправить json
     xhr.responseType = "blob";
     xhr.onreadystatechange = function () {
         xhr.onload = function () {
@@ -778,5 +1062,34 @@ function extract() {
                 a.remove();
             }
         };
+    }
+}
+
+function changeStatus() {
+    let checkboxes = document.querySelectorAll('.lists-table__box:not(.lists-table__box-name) input:checked');
+    let value;
+    if (checkboxes.length > 1) {
+        alert("Необходимо выбрать только одну рассылку")
+    } else {
+        if (checkboxes.length === 0) {
+            alert("Необходимо выбрать хотя бы одну рассылку")
+        } else {
+            value = checkboxes[0].value.split(', ');
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/emailCount/changeStatus/", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            let tmp_json = JSON.stringify(value[0]);
+            xhr.send(tmp_json); // Отправьте массив значений
+            xhr.responseType = "blob";
+            xhr.onreadystatechange = function () {
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        location.reload();
+                    } else {
+                        alert("не получилось создать ")
+                    }
+                }
+            };
+        }
     }
 }

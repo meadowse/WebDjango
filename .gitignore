@@ -1,11 +1,10 @@
-node_modules
-*/__pycache__/*
-__pycache__/*
-temp.docx
-generated_nakleiki.docx
-﻿# Запрещенные к размещению в репозитории файлы #
+# Запрещенные к размещению в репозитории файлы #
 node_modules/
 build/
+*/__pycache__/
+__pycache__/
+venv/
+static/
 *.pyo
 *.pyc
 *~
@@ -19,7 +18,6 @@ build/
 *.o
 *.so
 *.log
-*.sql
 *.sqlite
 .DS_Store
 .DS_Store?
@@ -28,7 +26,6 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
-README.md
 .idea/*
 *.md
 *.sublime-workspace
@@ -75,13 +72,15 @@ README.md
 *.png
 *.svg
 *.ico
-*.xml
 *temp.html
 *temp.css
 *temp.js
 *temp.php
 
 # Разрешенные для размещения в репозитории файлы #
-!assets/img/*.ico
-!assets/img/*.png
-
+!dbServer/static/dbServer/images/*
+!tes.docx
+!templateForMail.docx
+!Info.docx
+!leghal.docx
+!.gitignore

@@ -3,7 +3,9 @@
 {% load static %}
 <div class="main-content content">
     <div class="about content-inner">
-        <a class="about-prev prev" href="{% url 'home' %}"><img src="{% static 'dbServer/images/arr-left.png' %}" alt=""></a>
+        <a class="about-prev prev arrow" href="{% url 'home' %}">
+            <img src="{% static 'dbServer/images/arr-left.png' %}" alt="">
+        </a>
         <div class="content-wrap about-wrap">
             <div class="about-left content-left">
                 <div class="top-item about-top__company">{{ Companies.company_name }}</div>
@@ -68,7 +70,7 @@
                             <p class="text">Сайт</p>
                         </div>
                         <div class="about-table__item">
-                            <p class="text"><a href="{{ Companies.website }}" target="_blank">{{ Companies.website }}</a></p>
+                            <p class="text">{{ Companies.website|urlize }}</p>
                         </div>
                     </div>
                     <div class="about-table__row">

@@ -31,22 +31,7 @@ except KeyError as e:
 # Не следует использовать этот режим в продакшн-сервере.
 DEBUG = False
 
-try:
-    DOMEN_NAME = os.environ["DOMEN_NAME"]
-except KeyError as e:
-    raise RuntimeError("Could not find a DOMEN_NAME in environment") from e
-
-try:
-    DOMEN_NAME2 = os.environ["DOMEN_NAME2"]
-except KeyError as e:
-    raise RuntimeError("Could not find a DOMEN_NAME2 in environment") from e
-
-try:
-    IP = os.environ["IP"]
-except KeyError as e:
-    raise RuntimeError("Could not find a IP in environment") from e
-
-ALLOWED_HOSTS = ['127.0.0.1', DOMEN_NAME, DOMEN_NAME2, IP]
+ALLOWED_HOSTS = ['127.0.0.1', 'rasilka.ru', 'rasilka.online', '82.148.30.81']
 
 # Installed apps - список приложений, которые используются в проекте.
 # Регистрируем новые приложения
@@ -97,30 +82,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-try:
-    PASSWORD = os.environ["PASSWORD"]
-except KeyError as e:
-    raise RuntimeError("Could not find a PASSWORD in environment") from e
-
-try:
-    NAME = os.environ["NAME"]
-except KeyError as e:
-    raise RuntimeError("Could not find a NAME in environment") from e
-
-try:
-    USER = os.environ["USER"]
-except KeyError as e:
-    raise RuntimeError("Could not find a USER in environment") from e
-
-# Database
+# # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # поменять бд с которыми работаем 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
+        'NAME': 'meadowse',
+        'USER': 'meadowse',
+        'PASSWORD': 'Comebackplz56!!',
         'HOST': 'localhost',
     },
 }
@@ -166,24 +136,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-try:
-    FULL_DOMEN_NAME = os.environ["FULL_DOMEN_NAME"]
-except KeyError as e:
-    raise RuntimeError("Could not find a FULL_DOMEN_NAME in environment") from e
-
-try:
-    FULL_DOMEN_NAME2 = os.environ["FULL_DOMEN_NAME2"]
-except KeyError as e:
-    raise RuntimeError("Could not find a FULL_DOMEN_NAME2 in environment") from e
-
 # CORS SETTINGS
 CORS_ALLOW_ALL_ORIGINS = False  # Разрешить все источники или нет
 CORS_ALLOWED_ORIGINS = [
-    FULL_DOMEN_NAME,       # Добавьте разрешенные источники
-    FULL_DOMEN_NAME2,  # Другие разрешенные источники
+    "https://rasilka.ru",       # Добавьте разрешенные источники
+    "https://rasilka.online",  # Другие разрешенные источники
 ]
 
-CSRF_TRUSTED_ORIGINS = [FULL_DOMEN_NAME, FULL_DOMEN_NAME2, ]
+CSRF_TRUSTED_ORIGINS = ['https://rasilka.ru', 'https://rasilka.online', ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = 'media/'

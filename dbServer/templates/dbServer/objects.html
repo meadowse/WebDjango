@@ -2,171 +2,319 @@
 {% block body %}
 {% load static %}
 <div class="main-content content">
-    <div class="lists">
-        <div class="lists-table table" id="table">
-            <div class="lists-table__col lists-table__col-name">
-                <div class="lists-table__box lists-table__box-name">
-                    <div class="toggle-col">
-                        <ul class="toggle-col__list">
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" disabled checked>
-                                    <span class="text">Адрес объекта</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col2">
-                                    <span class="text">Округ</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col3">
-                                    <span class="text">Назначение объекта</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col4">
-                                    <span class="text">Кадастровый номер</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col5">
-                                    <span class="text">Площадь объекта, м2</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col6">
-                                    <span class="text">Этажность</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col7">
-                                    <span class="text">Вид объекта</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col8">
-                                    <span class="text">Вид собственности</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col9">
-                                    <span class="text">Собственник/арендатор</span>
-                                </label>
-                            </li>
-                            <li class="toggle-col__li">
-                                <label>
-                                    <input type="checkbox" checked id="col10">
-                                    <span class="text">Выписка</span>
-                                </label>
-                            </li>
-                        </ul>
+    <div class="lists" id="tableObjects">
+        <div class="table-block">
+            <div class="toggle-col">
+                <img src="{% static 'dbServer/images/columns.png'%}" alt="">Колонны
+                <ul class="toggle-col__list">
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" disabled checked>
+                            <span class="text">Кадастровый номер</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col2">
+                            <span class="text">Округ</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col3">
+                            <span class="text">Назначение объекта</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col4">
+                            <span class="text">Адрес объекта</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col5">
+                            <span class="text">Площадь, м2</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col6">
+                            <span class="text">Этажность</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col7">
+                            <span class="text">Тип объекта</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col8">
+                            <span class="text">Источники данных</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col9">
+                            <span class="text">Тип права</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col10">
+                            <span class="text">Номер права</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col11">
+                            <span class="text">Правообладатель</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col12">
+                            <span class="text">ИНН</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col13">
+                            <span class="text">Рассылка по электронной почте</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col14">
+                            <span class="text">Рассылка по почте</span>
+                        </label>
+                    </li>
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col15">
+                            <span class="text">Рассылка по смс</span>
+                        </label>
+                    </li>
+
+                    <li class="toggle-col__li">
+                        <label>
+                            <input type="checkbox" checked id="col16">
+                            <span class="text">Звонки</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="lists-table table" id="table">
+                <div class="lists-table__col lists-table__col-name">
+                    <div class="lists-table__box lists-table__box-name">
+                        <p class="text head-text">Кадастровый номер</p>
                     </div>
-                    <p class="text head-text">Адрес объекта</p>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.cadastral_number }}</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text"> {{ i.address}}</p>
+                <div class="lists-table__col" draggable="true" data-col="col2">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Округ</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{% if i.district is not null %}{{ i.district }}{% endif %}</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <div class="lists-table__col" draggable="true" data-col="col3">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Назначение объекта</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.Object_assignment }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col4">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Адрес объекта</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{% if i.address is not null %}{{ i.address }}{% endif %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col5">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Площадь, м2</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{% if i.square is not null %}{{ i.square }}{% endif %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col6">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Этажность</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.number_of_floors }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col7">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Тип объекта</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{{ i.object_type }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col8">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Источники данных</p>
+                    </div>
+                    {% for i in objInfo %}
+                        <div class="lists-table__box">
+                            <div class="text-flex">
+                                {% for j in i.data_source %}
+                                    <p class="text">{% if j is not null %}{{ j }}{% endif %}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col9">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Тип права</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{% if i.type_right is not null %}{{ i.type_right }}{% endif %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col10">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Номер права</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{% if i.number_right is not null %}{{ i.number_right }}{% endif %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col11">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Правообладатель</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{% if i.company_name is not null %}{{ i.company_name }}{% endif %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col12">
+                    <div class="lists-table__box">
+                        <p class="text head-text">ИНН</p>
+                    </div>
+                    {% for i in objInfo %}
+                    <div class="lists-table__box">
+                        <p class="text">{% if i.inn_company is not null %}{{ i.inn_company }}{% endif %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col13">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Рассылка по электронной почте</p>
+                    </div>
+                    {% for i in objInfo %}
+                        <div class="lists-table__box">
+                            <div class="text-flex">
+                                {% for f in i.email_newsletter %}
+                                    <p class="text">{{ f }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col14">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Рассылка по почте</p>
+                    </div>
+                    {% for i in objInfo %}
+                        <div class="lists-table__box">
+                            <div class="text-flex">
+                                {% for f in i.mail_newsletter %}
+                                    <p class="text">{{ f }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col15">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Рассылка по смс</p>
+                    </div>
+                    {% for i in objInfo %}
+                        <div class="lists-table__box">
+                            <div class="text-flex">
+                                {% for f in i.sms_mailing %}
+                                    <p class="text">{{ f }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="lists-table__col" draggable="true" data-col="col16">
+                    <div class="lists-table__box">
+                        <p class="text head-text">Звонки</p>
+                    </div>
+                    {% for i in objInfo %}
+                        <div class="lists-table__box">
+                            <div class="text-flex">
+                                {% for f in i.the_bell %}
+                                    <p class="text">{{ f }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="lists-table__col" draggable="true" data-col="col2">
-                <div class="lists-table__box">
-                    <p class="text head-text">Округ</p>
+        </div>
+        <div class="table-more more">
+            <div class="more-navigation__wrap find">
+                <div class="more-arrow prev arrow">
+                    <img src="{% static 'dbServer/images/arr-nav-left.png' %}" alt="" />
+                    Назад
                 </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.district }}</p>
+                <div class="more-navigation__nums-box">
+                    <div class="more-navigation__num more-navigation__num-first" data-num="1">1</div>
+                    <div class="more-navigation__nums"></div>
+                    <div class="more-navigation__num more-navigation__num-last"></div>
                 </div>
-                {% endfor %}
+                <div class="more-arrow next arrow">
+                    Вперед
+                    <img src="{% static 'dbServer/images/arr-nav-right.png' %}" alt="" />
+                </div>
             </div>
-            <div class="lists-table__col" draggable="true" data-col="col3">
-                <div class="lists-table__box">
-                    <p class="text head-text">Назначение объекта</p>
+            <div class="more-box">
+                <div class="counter counter-1">{{ count }}</div>
+                <div class="limit-sort filter-drop drop">
+                    <div class="text">Показать:</div><span data-result="50">50</span>
+                    <div class="drop__list">
+                        <div class="drop__item find" data-drop="50">50</div>
+                        <div class="drop__item find" data-drop="100">100</div>
+                        <div class="drop__item find" data-drop="200">200</div>
+                    </div>
                 </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.Object_assignment }}</p>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="lists-table__col" draggable="true" data-col="col4">
-                <div class="lists-table__box">
-                    <p class="text head-text">Кадастровый номер</p>
-                </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.cadastral_number }}</p>
-                </div>
-                {% endfor  %}
-            </div>
-            <div class="lists-table__col" draggable="true" data-col="col5">
-                <div class="lists-table__box">
-                    <p class="text head-text">Площадь объекта, м2</p>
-                </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.square }}</p>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="lists-table__col" draggable="true" data-col="col6">
-                <div class="lists-table__box">
-                    <p class="text head-text">Этажность</p>
-                </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.number_of_floors }}</p>
-                </div>
-                {%  endfor %}
-            </div>
-            <div class="lists-table__col" draggable="true" data-col="col7">
-                <div class="lists-table__box">
-                    <p class="text head-text">Вид объекта</p>
-                </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.object_type }}</p>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="lists-table__col" draggable="true" data-col="col8">
-                <div class="lists-table__box">
-                    <p class="text head-text">Вид собственности</p>
-                </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.type_of_property }}</p>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="lists-table__col" draggable="true" data-col="col9">
-                <div class="lists-table__box">
-                    <p class="text head-text">Собственник/арендатор</p>
-                </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.owner_lessee  }}</p>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="lists-table__col" draggable="true" data-col="col10">
-                <div class="lists-table__box">
-                    <p class="text head-text">Выписка</p>
-                </div>
-                {% for i in objInfo %}
-                <div class="lists-table__box">
-                    <p class="text">{{ i.extract }}</p>
-                </div>
-                {% endfor %}
             </div>
         </div>
     </div>

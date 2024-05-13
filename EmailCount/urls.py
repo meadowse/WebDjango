@@ -10,4 +10,5 @@ urlpatterns = [
     path('createLetters/', createLetters, name='createLetters'),
     path('removeLine/', removeLine, name='removeLine'),
     path('<int:catid>/', EmalePajeinfo, name='EmalePajeinfo'),
+    path('changeStatus/', changeStatus, name='changeStatus'),
 ]
